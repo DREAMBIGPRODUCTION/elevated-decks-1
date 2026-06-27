@@ -4,8 +4,8 @@ export const packageGuide = {
   title: "Package Options Guide",
   description:
     "An overview of our deck package tiers, material options, and what to expect after your site visit.",
-  pdfPath: "/package-options/elevated-decks-package-options-guide.pdf",
-  pdfFilename: "Elevated-Decks-Package-Options-Guide.pdf",
+  pdfPath: "/package-options.pdf",
+  pdfFilename: "package-options.pdf",
 }
 
 export const siteConfig = {

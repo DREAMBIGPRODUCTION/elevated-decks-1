@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { PdfTocMenu } from "@/components/package-options/pdf-toc-menu"
 import { Button } from "@/components/ui/button"
 import { packageGuide } from "@/lib/site-config"
+import { buildPdfViewerSrc } from "@/lib/pdf-viewer-bridge"
 import { useFadingUi } from "@/hooks/use-fading-ui"
 import { usePdfViewerBridge } from "@/hooks/use-pdf-viewer-bridge"
 import { cn } from "@/lib/utils"
@@ -11,6 +12,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Download,
+  ExternalLink,
   Loader2,
   RotateCcw,
   X,
@@ -29,7 +31,7 @@ export function PackageGuideViewerModal({
 }: PackageGuideViewerModalProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const markActiveRef = useRef<() => void>(() => {})
-  const [isLoading, setIsLoading] = useState(true)
+  const [iframeReady, setIframeReady] = useState(false)
 
   const close = useCallback(() => {
     onOpenChange(false)
@@ -41,6 +43,7 @@ export function PackageGuideViewerModal({
     isAtPageOneTop,
     outline,
     isReady,
+    loadError,
     hasOutline,
     goToNextPage,
     goToPreviousPage,
@@ -49,12 +52,14 @@ export function PackageGuideViewerModal({
   } = usePdfViewerBridge({
     iframeRef,
     open,
-    isLoading,
+    iframeReady,
     onActivity: () => markActiveRef.current(),
   })
 
+  const isLoading = open && iframeReady && !isReady && !loadError
+
   const { controlsVisible, markActive } = useFadingUi({
-    enabled: open && !isLoading,
+    enabled: open && (isReady || loadError),
     pinned: isAtPageOneTop,
   })
 
@@ -64,14 +69,15 @@ export function PackageGuideViewerModal({
 
   const viewerSrc = useMemo(() => {
     if (!open || typeof window === "undefined") return ""
-    const file = `${window.location.origin}${pdfUrl}`
-    return `/pdfjs/web/viewer.html?file=${encodeURIComponent(file)}`
+    return buildPdfViewerSrc(pdfUrl)
   }, [open, pdfUrl])
 
   useEffect(() => {
-    if (!open) return
+    if (!open) {
+      setIframeReady(false)
+      return
+    }
 
-    setIsLoading(true)
     document.body.style.overflow = "hidden"
 
     const onKeyDown = (event: KeyboardEvent) => {
@@ -89,6 +95,7 @@ export function PackageGuideViewerModal({
 
     return () => {
       document.body.style.overflow = ""
+      setIframeReady(false)
       window.removeEventListener("keydown", onKeyDown)
       window.removeEventListener("blur", onWindowBlur)
     }
@@ -109,13 +116,15 @@ export function PackageGuideViewerModal({
         <header
           className={cn(
             "pointer-events-none absolute inset-x-0 top-0 z-20 px-3 pt-3 sm:px-4 sm:pt-4 transition-opacity duration-500",
-            controlsVisible ? "opacity-100" : "opacity-0",
+            controlsVisible || isLoading ? "opacity-100" : "opacity-0",
           )}
         >
           <div
             className={cn(
               "pointer-events-auto rounded-2xl border border-border/60 bg-background/95 p-2 shadow-lg backdrop-blur-sm transition-opacity duration-500",
-              controlsVisible ? "opacity-100" : "opacity-40 hover:opacity-100 focus-within:opacity-100",
+              controlsVisible || isLoading
+                ? "opacity-100"
+                : "opacity-40 hover:opacity-100 focus-within:opacity-100",
             )}
           >
             <div className="flex flex-wrap items-center gap-2 sm:flex-nowrap">
@@ -243,15 +252,44 @@ export function PackageGuideViewerModal({
               <p className="text-sm">Loading your guide...</p>
             </div>
           )}
+
+          {loadError && (
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-card px-6 text-center">
+              <p className="text-muted-foreground max-w-md leading-relaxed">
+                The viewer couldn&apos;t load your guide. You can still open the PDF directly.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button asChild size="lg" className="h-12">
+                  <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
+                    <ExternalLink className="mr-2 h-4 w-4" />
+                    Open PDF in New Tab
+                  </a>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="h-12">
+                  <a
+                    href={pdfUrl}
+                    download={packageGuide.pdfFilename}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Download className="mr-2 h-4 w-4" />
+                    Download PDF
+                  </a>
+                </Button>
+              </div>
+            </div>
+          )}
+
           {viewerSrc && (
             <iframe
+              key={viewerSrc}
               ref={iframeRef}
               title={packageGuide.title}
               src={viewerSrc}
-              className="h-full w-full border-0"
+              className={cn("h-full w-full border-0", loadError && "hidden")}
               allow="fullscreen"
               onLoad={() => {
-                setIsLoading(false)
+                setIframeReady(true)
                 markActive()
               }}
             />

@@ -6,6 +6,7 @@ import {
   hideNativePdfToolbar,
   isAtTopOfFirstPage,
   normalizeOutline,
+  waitForPdfViewerApp,
   type PdfOutlineItem,
   type PdfViewerApplication,
   type PdfViewerWindow,
@@ -14,21 +15,26 @@ import {
 type UsePdfViewerBridgeOptions = {
   iframeRef: React.RefObject<HTMLIFrameElement | null>
   open: boolean
-  isLoading: boolean
+  iframeReady: boolean
   onActivity?: () => void
+  onDocumentReady?: () => void
+  onDocumentError?: () => void
 }
 
 export function usePdfViewerBridge({
   iframeRef,
   open,
-  isLoading,
+  iframeReady,
   onActivity,
+  onDocumentReady,
+  onDocumentError,
 }: UsePdfViewerBridgeOptions) {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(0)
   const [isAtPageOneTop, setIsAtPageOneTop] = useState(true)
   const [outline, setOutline] = useState<PdfOutlineItem[]>([])
   const [isReady, setIsReady] = useState(false)
+  const [loadError, setLoadError] = useState(false)
   const listenersCleanupRef = useRef<(() => void) | null>(null)
 
   const syncViewerState = useCallback((app: PdfViewerApplication) => {
@@ -48,8 +54,9 @@ export function usePdfViewerBridge({
   )
 
   useEffect(() => {
-    if (!open || isLoading) {
+    if (!open || !iframeReady) {
       setIsReady(false)
+      setLoadError(false)
       return
     }
 
@@ -57,19 +64,35 @@ export function usePdfViewerBridge({
 
     const setup = async () => {
       const viewerWindow = iframeRef.current?.contentWindow as PdfViewerWindow | null
-      const app = viewerWindow?.PDFViewerApplication
-      if (!app?.initializedPromise) return
+      const app = await waitForPdfViewerApp(viewerWindow)
+      if (!app || cancelled) {
+        if (!cancelled) {
+          setLoadError(true)
+          onDocumentError?.()
+        }
+        return
+      }
 
-      await app.initializedPromise
-      if (cancelled) return
+      const onDocumentErrorEvent = () => {
+        if (cancelled) return
+        setLoadError(true)
+        setIsReady(false)
+        onDocumentError?.()
+      }
 
-      hideNativePdfToolbar(viewerWindow!)
-      syncViewerState(app)
+      const onDocumentLoaded = async () => {
+        if (cancelled) return
 
-      const outlineData = await app.pdfDocument?.getOutline()
-      if (!cancelled) {
-        setOutline(normalizeOutline(outlineData))
-        setIsReady(true)
+        hideNativePdfToolbar(viewerWindow!)
+        syncViewerState(app)
+
+        const outlineData = await app.pdfDocument?.getOutline()
+        if (!cancelled) {
+          setOutline(normalizeOutline(outlineData))
+          setIsReady(true)
+          setLoadError(false)
+          onDocumentReady?.()
+        }
       }
 
       const onPageChange = ({ pageNumber }: { pageNumber: number }) => {
@@ -83,13 +106,31 @@ export function usePdfViewerBridge({
         onActivity?.()
       }
 
+      app.eventBus?._on("documenterror", onDocumentErrorEvent)
+      app.eventBus?._on("documentloaded", onDocumentLoaded)
       app.eventBus?._on("pagechanging", onPageChange)
+
       const container = app.pdfViewer?.container
       container?.addEventListener("scroll", onScroll, { passive: true })
 
       listenersCleanupRef.current = () => {
+        app.eventBus?._off("documenterror", onDocumentErrorEvent)
+        app.eventBus?._off("documentloaded", onDocumentLoaded)
         app.eventBus?._off("pagechanging", onPageChange)
         container?.removeEventListener("scroll", onScroll)
+      }
+
+      try {
+        await app.initializedPromise
+        if (cancelled) return
+
+        if (app.pdfDocument) {
+          await onDocumentLoaded()
+        }
+      } catch {
+        if (!cancelled) {
+          onDocumentErrorEvent()
+        }
       }
     }
 
@@ -100,12 +141,21 @@ export function usePdfViewerBridge({
       listenersCleanupRef.current?.()
       listenersCleanupRef.current = null
       setIsReady(false)
+      setLoadError(false)
       setCurrentPage(1)
       setTotalPages(0)
       setIsAtPageOneTop(true)
       setOutline([])
     }
-  }, [iframeRef, isLoading, onActivity, open, syncViewerState])
+  }, [
+    iframeReady,
+    iframeRef,
+    onActivity,
+    onDocumentError,
+    onDocumentReady,
+    open,
+    syncViewerState,
+  ])
 
   const goToNextPage = useCallback(async () => {
     await withApp((app) => {
@@ -149,6 +199,7 @@ export function usePdfViewerBridge({
     isAtPageOneTop,
     outline,
     isReady,
+    loadError,
     hasOutline: outline.length > 0,
     goToNextPage,
     goToPreviousPage,

@@ -41,6 +41,26 @@ export function getPdfViewerApp(iframe: HTMLIFrameElement | null) {
   return (iframe?.contentWindow as PdfViewerWindow | null)?.PDFViewerApplication
 }
 
+export async function waitForPdfViewerApp(
+  viewerWindow: PdfViewerWindow | null,
+  attempts = 100,
+  delayMs = 100,
+) {
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    const app = viewerWindow?.PDFViewerApplication
+    if (app?.initializedPromise) {
+      return app
+    }
+    await new Promise((resolve) => setTimeout(resolve, delayMs))
+  }
+  return null
+}
+
+export function buildPdfViewerSrc(pdfUrl: string) {
+  const file = `${window.location.origin}${pdfUrl}`
+  return `/pdfjs/web/viewer.html?file=${encodeURIComponent(file)}`
+}
+
 export function normalizeOutline(
   outline: PdfOutlineRawItem[] | null | undefined,
 ): PdfOutlineItem[] {
