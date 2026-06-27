@@ -23,7 +23,7 @@ const materials = [
   {
     id: "timbertech",
     title: "TimberTech Decking",
-    image: "/images/material-timbertech.jpg",
+    image: "/images/official/decking/azek-vintage-deck.webp",
     description:
       "TimberTech composite and capped polymer decking delivers premium aesthetics, strong moisture resistance, and long-term color retention — including AZEK PVC lines within the TimberTech family.",
     benefits: [

@@ -96,7 +96,7 @@ export function MaterialsSections() {
   return (
     <>
       {/* Brand Navigation Bar */}
-      <section id="materials" className="py-12 bg-secondary border-b border-border scroll-mt-24">
+      <section id="materials" className="py-12 bg-secondary border-b border-border scroll-mt-36">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-sm uppercase tracking-widest text-muted-foreground mb-8 font-medium">
             Authorized Installer
@@ -122,7 +122,7 @@ export function MaterialsSections() {
           <section
             key={brand.id}
             id={brand.id}
-            className={`py-16 sm:py-24 lg:py-32 scroll-mt-24 ${isDark ? "bg-[var(--deck-charcoal)] text-[var(--deck-cream)]" : "bg-background text-foreground"}`}
+            className={`py-16 sm:py-24 lg:py-32 scroll-mt-36 ${isDark ? "bg-[var(--deck-charcoal)] text-[var(--deck-cream)]" : "bg-background text-foreground"}`}
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className={`flex flex-col lg:flex-row gap-12 lg:gap-16 items-center mb-20 ${brandIndex % 2 !== 0 ? "lg:flex-row-reverse" : ""}`}>
@@ -230,7 +230,7 @@ export function MaterialsSections() {
       })}
 
       {/* Railings — primary product focus */}
-      <section id="railings" className="py-16 sm:py-24 lg:py-32 bg-background scroll-mt-24">
+      <section id="railings" className="py-16 sm:py-24 lg:py-32 bg-background scroll-mt-36">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <span className="text-sm uppercase tracking-widest text-accent font-medium mb-4 block">
@@ -257,7 +257,7 @@ export function MaterialsSections() {
       </section>
 
       {/* Official deck lighting */}
-      <section id="lighting" className="py-16 sm:py-24 lg:py-32 bg-[var(--deck-charcoal)] text-[var(--deck-cream)] scroll-mt-24">
+      <section id="lighting" className="py-16 sm:py-24 lg:py-32 bg-[var(--deck-charcoal)] text-[var(--deck-cream)] scroll-mt-36">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <Lightbulb className="h-10 w-10 text-accent mx-auto mb-4" />

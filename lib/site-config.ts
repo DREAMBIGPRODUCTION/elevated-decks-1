@@ -220,7 +220,7 @@ export const deckingBrands = [
       "Superior color retention",
       "Resists mold, moisture & insects",
     ],
-    image: "/images/material-timbertech.jpg",
+    image: "/images/official/decking/azek-vintage-deck.webp",
   },
 ]
 
@@ -308,8 +308,8 @@ export const lightingProducts: AccessoryProduct[] = [
       "Post Cap Lights",
       "Recessed Deck Lights",
     ],
-    image: "/images/official/lighting/trex-post-cap-lighting.jpg",
-    imageAlt: "Trex outdoor deck lighting on railing",
+    image: "/images/official/lighting/trex-deck-lighting.jpg",
+    imageAlt: "Trex outdoor deck lighting on stairs and railing at night",
     website: "https://www.trex.com/products/deck-lighting/",
   },
   {

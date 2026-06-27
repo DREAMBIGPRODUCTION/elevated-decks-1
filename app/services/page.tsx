@@ -5,6 +5,7 @@ import { Footer } from "@/components/layout/footer"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { MaterialsSections } from "@/components/services/materials-sections"
+import { ServicesQuickNav } from "@/components/services/services-quick-nav"
 import { deckCategories, featuredProjects, siteConfig } from "@/lib/site-config"
 import { absoluteUrl, getBreadcrumbSchema } from "@/lib/seo"
 import { ArrowRight, Phone, CheckCircle } from "lucide-react"
@@ -29,7 +30,6 @@ export const metadata: Metadata = {
 
 
 export default function ServicesPage() {
-  const serviceCategories = deckCategories.filter((category) => category.id !== "pressure-treated")
   const heroProject = featuredProjects[0]
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: "Home", url: absoluteUrl("/") },
@@ -95,45 +95,7 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        {/* Deck Systems */}
-        <section id="deck-systems" className="py-16 sm:py-24 lg:py-32 bg-background scroll-mt-24">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <span className="text-sm uppercase tracking-widest text-accent font-medium mb-4 block">
-                Deck Systems
-              </span>
-              <h2 className="font-serif text-4xl md:text-5xl font-semibold text-foreground mb-6">
-                Choose the Right System for Your Project
-              </h2>
-              <p className="text-muted-foreground text-lg max-w-2xl mx-auto text-pretty">
-                We focus on premium deck systems that balance long-term performance, refined
-                aesthetics, and the structural demands of Upstate New York.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {serviceCategories.map((category) => (
-                <div key={category.id} className="bg-card border border-border rounded-lg p-5 sm:p-8 hover:shadow-lg transition-shadow duration-300">
-                  <h3 className="font-serif text-2xl font-semibold text-foreground mb-2">
-                    {category.name}
-                  </h3>
-                  <p className="text-sm uppercase tracking-widest text-accent font-medium mb-4">
-                    {category.tagline}
-                  </p>
-                  <p className="text-muted-foreground text-sm mb-6">
-                    {category.description}
-                  </p>
-                  <Button asChild variant="outline" className="w-full border-foreground/20">
-                    <Link href="/gallery">
-                      View {category.name.split(' ')[0]} Examples
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <ServicesQuickNav />
 
         <MaterialsSections />
 
