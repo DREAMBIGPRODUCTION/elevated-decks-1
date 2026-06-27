@@ -8,6 +8,13 @@ export const packageGuide = {
   pdfFilename: "package-options.pdf",
 }
 
+export const trexDealerEmbed = {
+  baseUrl: "https://dealer.trex.com/",
+  utmId: "001RN00000iizL2YAI",
+  maxWidth: 1120,
+  height: 720,
+}
+
 export const siteConfig = {
   name: "Elevated Decks",
   tagline: "Your Backyard, Your Sanctuary",
@@ -361,17 +368,17 @@ export const galleryProjects: GalleryProject[] = [
   // Trex (Composite) Projects
   {
     id: 1,
-    slug: "clifton-park-azek-harvest-collection",
-    title: "Clifton Park Azek Harvest Collection",
-    category: "custom",
-    material: "azek",
-    location: "Clifton Park, NY",
+    slug: "amar-three-level-trex-deck-latham-ny",
+    title: "Amar Three-Level Trex Deck",
+    category: "composite",
+    material: "trex",
+    location: "Latham, NY",
     description:
-      "Multi-level AZEK Harvest Collection deck in Clifton Park with premium PVC decking, clean railing lines, and cascading stairs built for long-term low-maintenance performance.",
-    image: "/images/Decks pics/trex/amar/62009209184__B466798B-8116-41AE-9668-CCB6919B03B1.JPG",
+      "Multi-level Trex composite deck in Latham with rich brown decking, black baluster railings, and wide cascading stairs built for everyday outdoor living.",
+    image: "/images/Decks pics/trex/amar/62009209184__B466798B-8116-41AE-9668-CCB6919B03B1.jpg",
     images: [
+      "/images/Decks pics/trex/amar/62009209184__B466798B-8116-41AE-9668-CCB6919B03B1.jpg",
       "/images/Decks pics/trex/amar/61886496958__C48B881D-B811-4FE0-A5FE-43DADD2AA866.JPG",
-      "/images/Decks pics/trex/amar/62009209184__B466798B-8116-41AE-9668-CCB6919B03B1.JPG",
     ],
   },
   {

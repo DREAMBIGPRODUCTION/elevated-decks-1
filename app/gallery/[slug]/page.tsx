@@ -66,6 +66,8 @@ export default async function GalleryProjectPage({ params }: GalleryProjectPageP
     notFound()
   }
 
+  const galleryImages = project.images.filter((image) => image !== project.image)
+
   const relatedProjects = getAllGalleryProjects()
     .filter((candidate) => candidate.slug !== project.slug && candidate.category === project.category)
     .slice(0, 3)
@@ -149,7 +151,7 @@ export default async function GalleryProjectPage({ params }: GalleryProjectPageP
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">
-                  {project.images.slice(1).map((image, index) => (
+                  {galleryImages.map((image, index) => (
                     <div key={image} className="relative aspect-[4/3] overflow-hidden rounded-lg bg-muted">
                       <Image
                         src={image}

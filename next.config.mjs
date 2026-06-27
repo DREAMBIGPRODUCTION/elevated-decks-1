@@ -14,8 +14,8 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: "/gallery/amar-three-level-trex-deck-latham-ny",
-        destination: "/gallery/clifton-park-azek-harvest-collection",
+        source: "/gallery/clifton-park-azek-harvest-collection",
+        destination: "/gallery/azek-pool-deck-clifton-park-ny",
         permanent: true,
       },
       {

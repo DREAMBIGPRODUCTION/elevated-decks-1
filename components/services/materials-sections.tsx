@@ -8,6 +8,7 @@ import {
   railingProducts,
   type AccessoryProduct,
 } from "@/lib/site-config"
+import { TrexDealerTrigger } from "@/components/services/trex-dealer-trigger"
 import { ArrowRight, CheckCircle, ExternalLink, Lightbulb, Shield, Palette, Award, Droplets } from "lucide-react"
 
 function AccessoryProductBlock({
@@ -146,7 +147,7 @@ export function MaterialsSections() {
                   <p className={`text-lg leading-relaxed mb-8 ${isDark ? "text-[var(--deck-cream)]/70" : "text-muted-foreground"}`}>
                     {brand.description}
                   </p>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
                     {brand.highlights.map((highlight) => (
                       <li key={highlight} className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
@@ -156,6 +157,9 @@ export function MaterialsSections() {
                       </li>
                     ))}
                   </ul>
+                  {brand.id === "trex" && (
+                    <TrexDealerTrigger dark={isDark} />
+                  )}
                 </div>
               </div>
 
