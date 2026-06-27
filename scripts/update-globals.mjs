@@ -1,0 +1,182 @@
+import { execSync } from 'child_process';
+import { writeFileSync } from 'fs';
+import { join } from 'path';
+
+const cssContent = `@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* Elevated Decks — Luxury Architectural Theme */
+/* Palette: Deep Charcoal, Warm Cream, Rich Wood Brown, Steel Gray, Off-White */
+
+:root {
+  --background: oklch(0.97 0.008 75);
+  --foreground: oklch(0.12 0 0);
+  --card: oklch(0.99 0.004 75);
+  --card-foreground: oklch(0.12 0 0);
+  --popover: oklch(0.99 0.004 75);
+  --popover-foreground: oklch(0.12 0 0);
+  --primary: oklch(0.14 0 0);
+  --primary-foreground: oklch(0.97 0.008 75);
+  --secondary: oklch(0.93 0.010 75);
+  --secondary-foreground: oklch(0.14 0 0);
+  --muted: oklch(0.93 0.008 75);
+  --muted-foreground: oklch(0.48 0.008 75);
+  --accent: oklch(0.52 0.09 55);
+  --accent-foreground: oklch(0.99 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(0.88 0.006 75);
+  --input: oklch(0.93 0.006 75);
+  --ring: oklch(0.52 0.09 55);
+  --chart-1: oklch(0.52 0.09 55);
+  --chart-2: oklch(0.55 0.04 220);
+  --chart-3: oklch(0.70 0 0);
+  --chart-4: oklch(0.45 0.07 55);
+  --chart-5: oklch(0.65 0.05 220);
+  --radius: 0.25rem;
+  --deck-charcoal: oklch(0.12 0 0);
+  --deck-cream: oklch(0.97 0.008 75);
+  --deck-wood: oklch(0.52 0.09 55);
+  --deck-steel: oklch(0.55 0.03 220);
+  --deck-dark: oklch(0.10 0.005 240);
+  --deck-dark-card: oklch(0.16 0.005 240);
+  --sidebar: oklch(0.97 0.008 75);
+  --sidebar-foreground: oklch(0.12 0 0);
+  --sidebar-primary: oklch(0.14 0 0);
+  --sidebar-primary-foreground: oklch(0.97 0.008 75);
+  --sidebar-accent: oklch(0.93 0.010 75);
+  --sidebar-accent-foreground: oklch(0.14 0 0);
+  --sidebar-border: oklch(0.88 0.006 75);
+  --sidebar-ring: oklch(0.52 0.09 55);
+}
+
+.dark {
+  --background: oklch(0.10 0.005 240);
+  --foreground: oklch(0.95 0.005 75);
+  --card: oklch(0.16 0.005 240);
+  --card-foreground: oklch(0.95 0.005 75);
+  --popover: oklch(0.16 0.005 240);
+  --popover-foreground: oklch(0.95 0.005 75);
+  --primary: oklch(0.95 0.005 75);
+  --primary-foreground: oklch(0.10 0.005 240);
+  --secondary: oklch(0.22 0.005 240);
+  --secondary-foreground: oklch(0.95 0.005 75);
+  --muted: oklch(0.22 0.005 240);
+  --muted-foreground: oklch(0.60 0.005 75);
+  --accent: oklch(0.58 0.10 55);
+  --accent-foreground: oklch(0.99 0 0);
+  --destructive: oklch(0.50 0.20 25);
+  --destructive-foreground: oklch(0.95 0 0);
+  --border: oklch(0.25 0.005 240);
+  --input: oklch(0.22 0.005 240);
+  --ring: oklch(0.58 0.10 55);
+  --deck-charcoal: oklch(0.10 0.005 240);
+  --deck-cream: oklch(0.95 0.005 75);
+  --deck-wood: oklch(0.58 0.10 55);
+  --deck-steel: oklch(0.60 0.04 220);
+  --deck-dark: oklch(0.07 0.005 240);
+  --deck-dark-card: oklch(0.14 0.005 240);
+  --sidebar: oklch(0.16 0.005 240);
+  --sidebar-foreground: oklch(0.95 0.005 75);
+  --sidebar-primary: oklch(0.58 0.10 55);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.22 0.005 240);
+  --sidebar-accent-foreground: oklch(0.95 0.005 75);
+  --sidebar-border: oklch(0.25 0.005 240);
+  --sidebar-ring: oklch(0.58 0.10 55);
+}
+
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair);
+  --font-mono: 'Geist Mono', monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 8px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-deck-charcoal: var(--deck-charcoal);
+  --color-deck-cream: var(--deck-cream);
+  --color-deck-wood: var(--deck-wood);
+  --color-deck-steel: var(--deck-steel);
+  --color-deck-dark: var(--deck-dark);
+  --color-deck-dark-card: var(--deck-dark-card);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  .font-display {
+    font-family: var(--font-playfair), Georgia, serif;
+  }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slowZoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+.animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+.animate-slow-zoom { animation: slowZoom 14s ease-out forwards; }
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+`;
+
+const filePath = join('/vercel/share/v0-project', 'app', 'globals.css');
+writeFileSync(filePath, cssContent, 'utf8');
+console.log('[v0] Successfully wrote globals.css');
