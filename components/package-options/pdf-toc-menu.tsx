@@ -12,11 +12,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-import type { PdfOutlineItem } from "@/lib/pdf-viewer-bridge"
+import type { PackagePdfOutlineItem } from "@/lib/package-pdf-types"
 import { ChevronDown, List } from "lucide-react"
 
 type PdfTocMenuProps = {
-  outline: PdfOutlineItem[]
+  outline: PackagePdfOutlineItem[]
   disabled?: boolean
   onNavigate: (dest: unknown) => void
   onOpenChange?: (open: boolean) => void
@@ -26,7 +26,7 @@ function TocMenuItems({
   items,
   onNavigate,
 }: {
-  items: PdfOutlineItem[]
+  items: PackagePdfOutlineItem[]
   onNavigate: (dest: unknown) => void
 }) {
   return items.map((item, index) => {

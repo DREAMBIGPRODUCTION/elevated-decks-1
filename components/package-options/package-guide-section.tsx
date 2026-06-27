@@ -1,10 +1,18 @@
 "use client"
 
 import { useCallback, useEffect, useState } from "react"
+import dynamic from "next/dynamic"
 import { Button } from "@/components/ui/button"
-import { PackageGuideViewerModal } from "@/components/package-options/package-guide-viewer-modal"
 import { packageGuide } from "@/lib/site-config"
 import { BookOpen, Download, ExternalLink } from "lucide-react"
+
+const PackageGuideViewerModal = dynamic(
+  () =>
+    import("@/components/package-options/package-guide-viewer-modal").then(
+      (module) => module.PackageGuideViewerModal,
+    ),
+  { ssr: false },
+)
 
 type PackageGuideSectionProps = {
   pdfUrl: string
@@ -67,7 +75,7 @@ export function PackageGuideSection({ pdfUrl }: PackageGuideSectionProps) {
               <div>
                 <p className="font-medium text-foreground mb-1">{packageGuide.title}</p>
                 <p className="text-sm text-muted-foreground">
-                  Full PDF.js viewer with working links and zoom
+                  Loads in your browser — no download required
                 </p>
               </div>
               <Button
@@ -104,11 +112,13 @@ export function PackageGuideSection({ pdfUrl }: PackageGuideSectionProps) {
         </div>
       </section>
 
-      <PackageGuideViewerModal
-        pdfUrl={pdfUrl}
-        open={isViewerOpen}
-        onOpenChange={closeViewer}
-      />
+      {isViewerOpen && (
+        <PackageGuideViewerModal
+          pdfUrl={pdfUrl}
+          open={isViewerOpen}
+          onOpenChange={closeViewer}
+        />
+      )}
     </>
   )
 }

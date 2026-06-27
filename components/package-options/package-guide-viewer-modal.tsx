@@ -1,12 +1,12 @@
 "use client"
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
+import dynamic from "next/dynamic"
 import { PdfTocMenu } from "@/components/package-options/pdf-toc-menu"
 import { Button } from "@/components/ui/button"
 import { packageGuide } from "@/lib/site-config"
-import { buildPdfViewerSrc } from "@/lib/pdf-viewer-bridge"
+import type { PackagePdfOutlineItem } from "@/lib/package-pdf-types"
 import { useFadingUi } from "@/hooks/use-fading-ui"
-import { usePdfViewerBridge } from "@/hooks/use-pdf-viewer-bridge"
 import { cn } from "@/lib/utils"
 import {
   ChevronLeft,
@@ -17,6 +17,22 @@ import {
   RotateCcw,
   X,
 } from "lucide-react"
+
+const PackageGuidePdfViewer = dynamic(
+  () =>
+    import("@/components/package-options/package-guide-pdf-viewer").then(
+      (module) => module.PackageGuidePdfViewer,
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-full flex-col items-center justify-center gap-3 text-muted-foreground">
+        <Loader2 className="h-8 w-8 animate-spin text-accent" />
+        <p className="text-sm">Preparing viewer...</p>
+      </div>
+    ),
+  },
+)
 
 type PackageGuideViewerModalProps = {
   pdfUrl: string
@@ -29,37 +45,24 @@ export function PackageGuideViewerModal({
   open,
   onOpenChange,
 }: PackageGuideViewerModalProps) {
-  const iframeRef = useRef<HTMLIFrameElement>(null)
   const markActiveRef = useRef<() => void>(() => {})
-  const [iframeReady, setIframeReady] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(0)
+  const [outline, setOutline] = useState<PackagePdfOutlineItem[]>([])
+  const [zoom, setZoom] = useState(1)
+  const [navigationTick, setNavigationTick] = useState(0)
+  const [isScrollAtTop, setIsScrollAtTop] = useState(true)
+  const [isReady, setIsReady] = useState(false)
+  const [loadError, setLoadError] = useState(false)
+
+  const isAtPageOneTop = currentPage === 1 && isScrollAtTop
 
   const close = useCallback(() => {
     onOpenChange(false)
   }, [onOpenChange])
 
-  const {
-    currentPage,
-    totalPages,
-    isAtPageOneTop,
-    outline,
-    isReady,
-    loadError,
-    hasOutline,
-    goToNextPage,
-    goToPreviousPage,
-    goToDestination,
-    resetScale,
-  } = usePdfViewerBridge({
-    iframeRef,
-    open,
-    iframeReady,
-    onActivity: () => markActiveRef.current(),
-  })
-
-  const isLoading = open && iframeReady && !isReady && !loadError
-
   const { controlsVisible, markActive } = useFadingUi({
-    enabled: open && (isReady || loadError),
+    enabled: open && isReady,
     pinned: isAtPageOneTop,
   })
 
@@ -67,14 +70,16 @@ export function PackageGuideViewerModal({
     markActiveRef.current = markActive
   }, [markActive])
 
-  const viewerSrc = useMemo(() => {
-    if (!open || typeof window === "undefined") return ""
-    return buildPdfViewerSrc(pdfUrl)
-  }, [open, pdfUrl])
-
   useEffect(() => {
     if (!open) {
-      setIframeReady(false)
+      setCurrentPage(1)
+      setTotalPages(0)
+      setOutline([])
+      setZoom(1)
+      setNavigationTick(0)
+      setIsScrollAtTop(true)
+      setIsReady(false)
+      setLoadError(false)
       return
     }
 
@@ -88,18 +93,46 @@ export function PackageGuideViewerModal({
       markActive()
     }
 
-    const onWindowBlur = () => markActive()
-
     window.addEventListener("keydown", onKeyDown)
-    window.addEventListener("blur", onWindowBlur)
 
     return () => {
       document.body.style.overflow = ""
-      setIframeReady(false)
       window.removeEventListener("keydown", onKeyDown)
-      window.removeEventListener("blur", onWindowBlur)
     }
   }, [close, markActive, open])
+
+  const navigateToPage = useCallback((page: number) => {
+    setCurrentPage(page)
+    setNavigationTick((tick) => tick + 1)
+    markActive()
+  }, [markActive])
+
+  const goToNextPage = useCallback(() => {
+    if (currentPage >= totalPages) return
+    navigateToPage(currentPage + 1)
+  }, [currentPage, navigateToPage, totalPages])
+
+  const goToPreviousPage = useCallback(() => {
+    if (currentPage <= 1) return
+    navigateToPage(currentPage - 1)
+  }, [currentPage, navigateToPage])
+
+  const handleTocNavigate = useCallback(
+    async (dest: unknown) => {
+      markActive()
+      const { resolveOutlinePage } = await import(
+        "@/components/package-options/package-guide-pdf-viewer"
+      )
+      const page = await resolveOutlinePage(pdfUrl, dest)
+      if (page) navigateToPage(page)
+    },
+    [markActive, navigateToPage, pdfUrl],
+  )
+
+  const resetScale = useCallback(() => {
+    setZoom(1)
+    markActive()
+  }, [markActive])
 
   if (!open) return null
 
@@ -116,13 +149,13 @@ export function PackageGuideViewerModal({
         <header
           className={cn(
             "pointer-events-none absolute inset-x-0 top-0 z-20 px-3 pt-3 sm:px-4 sm:pt-4 transition-opacity duration-500",
-            controlsVisible || isLoading ? "opacity-100" : "opacity-0",
+            controlsVisible || !isReady ? "opacity-100" : "opacity-0",
           )}
         >
           <div
             className={cn(
               "pointer-events-auto rounded-2xl border border-border/60 bg-background/95 p-2 shadow-lg backdrop-blur-sm transition-opacity duration-500",
-              controlsVisible || isLoading
+              controlsVisible || !isReady
                 ? "opacity-100"
                 : "opacity-40 hover:opacity-100 focus-within:opacity-100",
             )}
@@ -134,10 +167,7 @@ export function PackageGuideViewerModal({
                   variant="outline"
                   size="icon"
                   className="h-10 w-10 rounded-full"
-                  onClick={() => {
-                    markActive()
-                    void goToPreviousPage()
-                  }}
+                  onClick={goToPreviousPage}
                   disabled={!isReady || currentPage <= 1}
                   aria-label="Previous page"
                 >
@@ -162,10 +192,7 @@ export function PackageGuideViewerModal({
                   variant="outline"
                   size="icon"
                   className="h-10 w-10 rounded-full"
-                  onClick={() => {
-                    markActive()
-                    void goToNextPage()
-                  }}
+                  onClick={goToNextPage}
                   disabled={!isReady || currentPage >= totalPages}
                   aria-label="Next page"
                 >
@@ -175,10 +202,9 @@ export function PackageGuideViewerModal({
 
               <PdfTocMenu
                 outline={outline}
-                disabled={!isReady || !hasOutline}
+                disabled={!isReady || outline.length === 0}
                 onNavigate={(dest) => {
-                  markActive()
-                  void goToDestination(dest)
+                  void handleTocNavigate(dest)
                 }}
                 onOpenChange={(menuOpen) => {
                   if (menuOpen) markActive()
@@ -191,10 +217,7 @@ export function PackageGuideViewerModal({
                   variant="outline"
                   size="sm"
                   className="hidden h-10 rounded-full px-4 md:inline-flex"
-                  onClick={() => {
-                    markActive()
-                    void resetScale()
-                  }}
+                  onClick={resetScale}
                   disabled={!isReady}
                 >
                   <RotateCcw className="mr-2 h-4 w-4" />
@@ -205,10 +228,7 @@ export function PackageGuideViewerModal({
                   variant="outline"
                   size="icon"
                   className="h-10 w-10 rounded-full md:hidden"
-                  onClick={() => {
-                    markActive()
-                    void resetScale()
-                  }}
+                  onClick={resetScale}
                   disabled={!isReady}
                   aria-label="Reset scale"
                 >
@@ -246,14 +266,7 @@ export function PackageGuideViewerModal({
         </header>
 
         <div className="relative min-h-0 flex-1 bg-[#404040]">
-          {isLoading && (
-            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-card text-muted-foreground">
-              <Loader2 className="h-8 w-8 animate-spin text-accent" />
-              <p className="text-sm">Loading your guide...</p>
-            </div>
-          )}
-
-          {loadError && (
+          {loadError ? (
             <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-card px-6 text-center">
               <p className="text-muted-foreground max-w-md leading-relaxed">
                 The viewer couldn&apos;t load your guide. You can still open the PDF directly.
@@ -278,20 +291,26 @@ export function PackageGuideViewerModal({
                 </Button>
               </div>
             </div>
-          )}
-
-          {viewerSrc && (
-            <iframe
-              key={viewerSrc}
-              ref={iframeRef}
-              title={packageGuide.title}
-              src={viewerSrc}
-              className={cn("h-full w-full border-0", loadError && "hidden")}
-              allow="fullscreen"
-              onLoad={() => {
-                setIframeReady(true)
+          ) : (
+            <PackageGuidePdfViewer
+              pdfUrl={pdfUrl}
+              currentPage={currentPage}
+              zoom={zoom}
+              navigationTick={navigationTick}
+              onDocumentLoad={({ numPages, outline: loadedOutline }) => {
+                setTotalPages(numPages)
+                setOutline(loadedOutline)
+                setIsReady(true)
+                setLoadError(false)
                 markActive()
               }}
+              onPageChange={setCurrentPage}
+              onScrollTopChange={setIsScrollAtTop}
+              onLoadError={() => {
+                setLoadError(true)
+                setIsReady(false)
+              }}
+              onActivity={markActive}
             />
           )}
         </div>
