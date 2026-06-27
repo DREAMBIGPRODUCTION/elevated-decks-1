@@ -367,21 +367,6 @@ export type GalleryProject = {
 export const galleryProjects: GalleryProject[] = [
   // Trex (Composite) Projects
   {
-    id: 1,
-    slug: "amar-three-level-trex-deck-latham-ny",
-    title: "Amar Three-Level Trex Deck",
-    category: "composite",
-    material: "trex",
-    location: "Latham, NY",
-    description:
-      "Multi-level Trex composite deck in Latham with rich brown decking, black baluster railings, and wide cascading stairs built for everyday outdoor living.",
-    image: "/images/Decks pics/trex/amar/62009209184__B466798B-8116-41AE-9668-CCB6919B03B1.jpg",
-    images: [
-      "/images/Decks pics/trex/amar/62009209184__B466798B-8116-41AE-9668-CCB6919B03B1.jpg",
-      "/images/Decks pics/trex/amar/61886496958__C48B881D-B811-4FE0-A5FE-43DADD2AA866.JPG",
-    ],
-  },
-  {
     id: 3,
     slug: "guilderland-trex-select-deck",
     title: "Guilderland Trex Select",
@@ -475,6 +460,21 @@ export const galleryProjects: GalleryProject[] = [
   },
 
   // AZEK (Custom) Projects
+  {
+    id: 1,
+    slug: "clifton-park-azek-harvest-deck",
+    title: "Clifton Park Azek Harvest Deck",
+    category: "custom",
+    material: "azek",
+    location: "Clifton Park, NY",
+    description:
+      "Custom AZEK Harvest Collection Kona deck boards built off the home's sunroom in Clifton Park, with stair lighting, post cap lighting, and a low-maintenance PVC finish designed for everyday outdoor living.",
+    image: "/images/Decks pics/trex/amar/62009209184__B466798B-8116-41AE-9668-CCB6919B03B1.jpg",
+    images: [
+      "/images/Decks pics/trex/amar/62009209184__B466798B-8116-41AE-9668-CCB6919B03B1.jpg",
+      "/images/Decks pics/trex/amar/61886496958__C48B881D-B811-4FE0-A5FE-43DADD2AA866.JPG",
+    ],
+  },
   {
     id: 7,
     slug: "azek-sunroom-deck-rensselaer-ny",
