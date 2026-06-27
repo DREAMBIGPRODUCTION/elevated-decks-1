@@ -1,5 +1,13 @@
 // Elevated Decks - Site Configuration
 
+export const packageGuide = {
+  title: "Package Options Guide",
+  description:
+    "An overview of our deck package tiers, material options, and what to expect after your site visit.",
+  pdfPath: "/package-options/elevated-decks-package-options-guide.pdf",
+  pdfFilename: "Elevated-Decks-Package-Options-Guide.pdf",
+}
+
 export const siteConfig = {
   name: "Elevated Decks",
   tagline: "Your Backyard, Your Sanctuary",
@@ -19,7 +27,7 @@ export const siteConfig = {
     instagram: "https://instagram.com/elevateddecks",
     houzz: "https://houzz.com/elevateddecks",
   },
-  url: "https://elevateddecks.net",
+  url: "https://elevateddecksny.com",
   established: "2016",
 }
 
