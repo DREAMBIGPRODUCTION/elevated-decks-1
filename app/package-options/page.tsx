@@ -3,6 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
+import { PackageGuideSection } from "@/components/package-options/package-guide-section"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { deckCategories, packageGuide, siteConfig } from "@/lib/site-config"
@@ -14,6 +15,7 @@ import {
   CheckCircle,
   FileText,
   Layers,
+  BookOpen,
 } from "lucide-react"
 
 export const metadata: Metadata = {
@@ -62,30 +64,45 @@ export default function PackageOptionsPage() {
               {packageGuide.title}
             </h1>
             <p className="text-base sm:text-lg text-primary-foreground/75 mb-8 text-pretty leading-relaxed max-w-2xl mx-auto">
-              Thank you for scheduling your site visit with {siteConfig.name}. Download
-              your personalized product guide to review package options, materials, and
-              next steps before we meet.
+              Thank you for scheduling your site visit with {siteConfig.name}. View or
+              download your product guide to review package options, materials, and next
+              steps before we meet.
             </p>
-            <Button
-              asChild
-              size="lg"
-              className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground h-14 px-8 text-base"
-            >
-              <a
-                href={packageGuide.pdfPath}
-                download={packageGuide.pdfFilename}
-                target="_blank"
-                rel="noopener noreferrer"
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+              <Button
+                asChild
+                size="lg"
+                className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground h-14 px-8 text-base"
               >
-                <Download className="mr-2 h-5 w-5" />
-                Download Guide (PDF)
-              </a>
-            </Button>
+                <a href="#guide-viewer">
+                  <BookOpen className="mr-2 h-5 w-5" />
+                  View Guide Online
+                </a>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="w-full sm:w-auto border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 h-14 px-8 bg-transparent"
+              >
+                <a
+                  href={packageGuide.pdfPath}
+                  download={packageGuide.pdfFilename}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Download className="mr-2 h-5 w-5" />
+                  Download PDF
+                </a>
+              </Button>
+            </div>
             <p className="mt-4 text-sm text-primary-foreground/50">
-              Works on phone, tablet, and desktop
+              Optimized for phone, tablet, and desktop
             </p>
           </div>
         </section>
+
+        <PackageGuideSection pdfUrl={packageGuide.pdfPath} />
 
         <section className="py-12 sm:py-16 bg-background border-b border-border">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
