@@ -181,7 +181,7 @@ export const deckingBrands = [
       "Splinter-free surface",
       "Mold & mildew resistant",
     ],
-    image: "/images/material-trex.jpg",
+    image: "/images/trex.png",
   },
   {
     id: "timbertech",

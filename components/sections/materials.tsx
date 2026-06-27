@@ -10,7 +10,7 @@ const materials = [
   {
     id: "trex",
     title: "Trex Decking",
-    image: "/images/Decks pics/trex/van schaick/02FAF800-5BA6-417F-B695-67F0B90E1E8D.jpg",
+    image: "/images/trex.png",
     description: "Trex composite decking combines 95% recycled materials with advanced technology to create beautiful, virtually maintenance-free decks. Industry-leading fade and stain protection.",
     benefits: [
       "25-30 year warranty",
