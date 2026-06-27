@@ -145,10 +145,10 @@ export function PackageGuideViewerModal({
       onMouseMove={markActive}
       onTouchStart={markActive}
     >
-      <div className="relative flex h-full w-full max-w-[1600px] flex-col overflow-hidden rounded-none bg-card shadow-2xl sm:rounded-lg">
+      <div className="relative flex h-full w-full max-w-[1600px] flex-col overflow-hidden rounded-none bg-card shadow-2xl sm:rounded-lg max-sm:max-w-none">
         <header
           className={cn(
-            "pointer-events-none absolute inset-x-0 top-0 z-20 px-3 pt-3 sm:px-4 sm:pt-4 transition-opacity duration-500",
+            "pointer-events-none absolute inset-x-0 top-0 z-20 px-2 pt-2 sm:px-4 sm:pt-4 transition-opacity duration-500",
             controlsVisible || !isReady ? "opacity-100" : "opacity-0",
           )}
         >
@@ -265,7 +265,7 @@ export function PackageGuideViewerModal({
           </div>
         </header>
 
-        <div className="relative min-h-0 flex-1 bg-[#404040]">
+        <div className="relative min-h-0 flex-1 overflow-hidden bg-[#404040]">
           {loadError ? (
             <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-card px-6 text-center">
               <p className="text-muted-foreground max-w-md leading-relaxed">

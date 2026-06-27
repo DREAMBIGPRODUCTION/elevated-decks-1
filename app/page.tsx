@@ -5,6 +5,7 @@ import { Hero } from "@/components/sections/hero"
 import { ServicesGrid } from "@/components/sections/services-grid"
 import { DesignSection } from "@/components/sections/design-section"
 import { ProjectGallery } from "@/components/sections/project-gallery"
+import { FacebookReelsSection } from "@/components/sections/facebook-reels"
 import { Materials } from "@/components/sections/materials"
 import { Process } from "@/components/sections/process"
 import { Testimonials } from "@/components/sections/testimonials"
@@ -52,6 +53,7 @@ export default function HomePage() {
         <ServicesGrid />
         <DesignSection />
         <ProjectGallery />
+        <FacebookReelsSection />
         <Materials />
         <Process />
         <Testimonials />

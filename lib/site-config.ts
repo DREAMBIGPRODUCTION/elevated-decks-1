@@ -15,6 +15,24 @@ export const trexDealerEmbed = {
   height: 720,
 }
 
+export const facebookReels = {
+  title: "See Our Decks in Action",
+  description:
+    "Watch recent project reels from Elevated Decks — real builds, materials, and finished outdoor spaces across the Capital Region.",
+  /** Facebook embeds do not expose a loop param; we reload on this cadence when visible. */
+  loopIntervalMs: 45_000,
+  reels: [
+    {
+      id: "1588930085510871",
+      href: "https://www.facebook.com/reel/1588930085510871/",
+    },
+    {
+      id: "2569011053549544",
+      href: "https://www.facebook.com/reel/2569011053549544/",
+    },
+  ],
+}
+
 export const siteConfig = {
   name: "Elevated Decks",
   tagline: "Your Backyard, Your Sanctuary",

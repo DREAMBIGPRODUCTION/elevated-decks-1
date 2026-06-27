@@ -79,25 +79,53 @@ export function PackageGuidePdfViewer({
   const [workerReady, setWorkerReady] = useState(false)
   const [pageWidth, setPageWidth] = useState(0)
   const [numPages, setNumPages] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     configurePdfWorker()
     setWorkerReady(true)
   }, [])
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 639px)")
+    const syncMobile = () => setIsMobile(mediaQuery.matches)
+    syncMobile()
+    mediaQuery.addEventListener("change", syncMobile)
+    return () => mediaQuery.removeEventListener("change", syncMobile)
+  }, [])
+
   const updateWidth = useCallback(() => {
     if (!scrollRef.current) return
+
+    const containerWidth = scrollRef.current.clientWidth
+    if (isMobile) {
+      setPageWidth(Math.max(Math.floor(containerWidth), 280))
+      return
+    }
+
     const styles = getComputedStyle(scrollRef.current)
     const paddingX =
       parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight)
-    setPageWidth(Math.max(scrollRef.current.clientWidth - paddingX, 280))
-  }, [])
+    setPageWidth(Math.max(Math.floor(containerWidth - paddingX), 280))
+  }, [isMobile])
 
   useEffect(() => {
     updateWidth()
+
+    const frame = window.requestAnimationFrame(updateWidth)
     const observer = new ResizeObserver(updateWidth)
-    if (scrollRef.current) observer.observe(scrollRef.current)
-    return () => observer.disconnect()
+    const container = scrollRef.current
+    if (container) observer.observe(container)
+
+    window.addEventListener("resize", updateWidth)
+    window.addEventListener("orientationchange", updateWidth)
+
+    return () => {
+      window.cancelAnimationFrame(frame)
+      observer.disconnect()
+      window.removeEventListener("resize", updateWidth)
+      window.removeEventListener("orientationchange", updateWidth)
+    }
   }, [updateWidth])
 
   useEffect(() => {
@@ -158,10 +186,15 @@ export function PackageGuidePdfViewer({
     )
   }
 
+  const renderedPageWidth = pageWidth > 0 ? pageWidth * zoom : undefined
+
   return (
     <div
       ref={scrollRef}
-      className="h-full overflow-y-auto bg-muted/20 px-3 py-4 sm:px-6 sm:py-6"
+      className={cn(
+        "h-full overflow-y-auto overflow-x-hidden bg-muted/20 touch-pan-y",
+        isMobile ? "px-0 py-2" : "px-3 py-4 sm:px-6 sm:py-6",
+      )}
       onWheel={onActivity}
       onTouchMove={onActivity}
     >
@@ -194,7 +227,10 @@ export function PackageGuidePdfViewer({
             </Button>
           </div>
         }
-        className="mx-auto flex max-w-5xl flex-col items-center gap-4"
+        className={cn(
+          "mx-auto flex w-full flex-col items-center",
+          isMobile ? "max-w-full gap-2" : "max-w-5xl gap-4",
+        )}
       >
         {Array.from({ length: numPages }, (_, index) => {
           const pageNumber = index + 1
@@ -207,16 +243,19 @@ export function PackageGuidePdfViewer({
               }}
               data-page-number={pageNumber}
               className={cn(
-                "w-full scroll-mt-4",
+                "w-full max-w-full overflow-hidden scroll-mt-4",
                 pageNumber === currentPage && "ring-2 ring-accent/30 rounded-sm",
               )}
             >
               <Page
                 pageNumber={pageNumber}
-                width={pageWidth ? pageWidth * zoom : undefined}
+                width={renderedPageWidth}
                 renderTextLayer
                 renderAnnotationLayer
-                className="mx-auto shadow-md"
+                className={cn(
+                  "mx-auto max-w-full shadow-md",
+                  isMobile && "shadow-sm",
+                )}
                 loading={
                   <div className="flex items-center justify-center py-16">
                     <Loader2 className="h-6 w-6 animate-spin text-accent" />
