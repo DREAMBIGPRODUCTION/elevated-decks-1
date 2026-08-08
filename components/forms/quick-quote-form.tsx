@@ -12,12 +12,14 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Spinner } from "@/components/ui/spinner"
-import { projectTypes, serviceAreas } from "@/lib/site-config"
+import { projectTypes, serviceAreas, siteConfig } from "@/lib/site-config"
+import { submitQuoteLead } from "@/app/actions/lead-actions"
 import { CheckCircle } from "lucide-react"
 
 export function QuickQuoteForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [error, setError] = useState("")
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -25,19 +27,36 @@ export function QuickQuoteForm() {
     projectType: "",
     squareFootage: "",
     city: "",
+    website: "",
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    
+    setError("")
+
+    const result = await submitQuoteLead({
+      name: formData.name,
+      phone: formData.phone,
+      email: formData.email,
+      projectType: formData.projectType || "General inquiry",
+      location: formData.city || "Not specified",
+      message: formData.squareFootage
+        ? `Quick quote request. Approx. size: ${formData.squareFootage}.`
+        : "Quick quote request from website.",
+      sourcePage: typeof window !== "undefined" ? window.location.pathname : "/quick-quote",
+      deckSize: formData.squareFootage || undefined,
+      website: formData.website,
+    })
+
     setIsSubmitting(false)
+
+    if (!result.success) {
+      setError(result.message)
+      return
+    }
+
     setIsSubmitted(true)
-    
-    // Reset after showing success
     setTimeout(() => {
       setIsSubmitted(false)
       setFormData({
@@ -47,8 +66,9 @@ export function QuickQuoteForm() {
         projectType: "",
         squareFootage: "",
         city: "",
+        website: "",
       })
-    }, 3000)
+    }, 4000)
   }
 
   const handleChange = (field: string, value: string) => {
@@ -66,6 +86,12 @@ export function QuickQuoteForm() {
           <p className="text-muted-foreground">
             We&apos;ll contact you within 24 hours with your free estimate.
           </p>
+          <p className="text-sm text-muted-foreground mt-2">
+            Or call{" "}
+            <a href={`tel:${siteConfig.phoneClean}`} className="text-accent font-medium">
+              {siteConfig.phone}
+            </a>
+          </p>
         </div>
       </div>
     )
@@ -79,6 +105,18 @@ export function QuickQuoteForm() {
       <h3 className="text-lg font-semibold text-card-foreground mb-4">
         Get Your Free Estimate
       </h3>
+
+      {/* Honeypot */}
+      <input
+        type="text"
+        name="website"
+        value={formData.website}
+        onChange={(e) => handleChange("website", e.target.value)}
+        className="hidden"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden
+      />
       
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
@@ -170,6 +208,12 @@ export function QuickQuoteForm() {
           </Select>
         </div>
       </div>
+
+      {error ? (
+        <p className="text-sm text-destructive mt-4" role="alert">
+          {error}
+        </p>
+      ) : null}
 
       <Button
         type="submit"

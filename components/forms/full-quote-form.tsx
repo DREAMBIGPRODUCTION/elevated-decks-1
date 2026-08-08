@@ -13,7 +13,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Spinner } from "@/components/ui/spinner"
-import { projectTypes, getAllLocations } from "@/lib/site-config"
+import { projectTypes, getAllLocations, siteConfig } from "@/lib/site-config"
+import { submitQuoteLead } from "@/app/actions/lead-actions"
 import { CheckCircle, Upload, X } from "lucide-react"
 
 interface FullQuoteFormProps {
@@ -24,6 +25,7 @@ interface FullQuoteFormProps {
 export function FullQuoteForm({ compact = false, defaultMessage = "" }: FullQuoteFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [error, setError] = useState("")
   const [files, setFiles] = useState<File[]>([])
   const [formData, setFormData] = useState({
     name: "",
@@ -33,6 +35,7 @@ export function FullQuoteForm({ compact = false, defaultMessage = "" }: FullQuot
     squareFootage: "",
     city: "",
     description: defaultMessage,
+    website: "",
   })
   
   const allLocations = getAllLocations()
@@ -40,11 +43,38 @@ export function FullQuoteForm({ compact = false, defaultMessage = "" }: FullQuot
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    
+    setError("")
+
+    const fileNote =
+      files.length > 0
+        ? ` Customer selected ${files.length} photo(s) for later share (upload not available yet — please email photos to ${siteConfig.email}).`
+        : ""
+
+    const result = await submitQuoteLead({
+      name: formData.name,
+      phone: formData.phone,
+      email: formData.email,
+      projectType: formData.projectType || "General inquiry",
+      location: formData.city || "Not specified",
+      message: [
+        formData.description || "Full quote request from website.",
+        formData.squareFootage ? `Approx. size: ${formData.squareFootage}.` : "",
+        fileNote,
+      ]
+        .filter(Boolean)
+        .join(" "),
+      sourcePage: typeof window !== "undefined" ? window.location.pathname : "/contact",
+      deckSize: formData.squareFootage || undefined,
+      website: formData.website,
+    })
+
     setIsSubmitting(false)
+
+    if (!result.success) {
+      setError(result.message)
+      return
+    }
+
     setIsSubmitted(true)
   }
 
@@ -74,13 +104,13 @@ export function FullQuoteForm({ compact = false, defaultMessage = "" }: FullQuot
             Quote Request Received!
           </h3>
           <p className="text-muted-foreground max-w-md mb-6">
-            Thank you for your interest in Stand Clear Epoxy. Our team will review 
-            your project details and contact you within 24 hours with a detailed estimate.
+            Thank you for your interest in Elevated Decks. Our team will review
+            your project details and contact you within 24 hours with next steps.
           </p>
           <p className="text-sm text-muted-foreground">
             Questions? Call us at{" "}
-            <a href="tel:3055553769" className="text-accent font-medium">
-              (305) 555-EPOXY
+            <a href={`tel:${siteConfig.phoneClean}`} className="text-accent font-medium">
+              {siteConfig.phone}
             </a>
           </p>
         </div>
@@ -93,6 +123,17 @@ export function FullQuoteForm({ compact = false, defaultMessage = "" }: FullQuot
       onSubmit={handleSubmit}
       className={compact ? "" : "bg-card rounded-lg p-6 md:p-8 shadow-lg border"}
     >
+      {/* Honeypot */}
+      <input
+        type="text"
+        name="website"
+        value={formData.website}
+        onChange={(e) => handleChange("website", e.target.value)}
+        className="hidden"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden
+      />
       {!compact && (
         <>
           <h2 className="text-2xl font-bold text-foreground mb-2">
@@ -224,9 +265,17 @@ export function FullQuoteForm({ compact = false, defaultMessage = "" }: FullQuot
           />
         </div>
 
-        {/* Photo Upload */}
+        {/* Photo note — file upload to S3 is Slice B; list selection for honesty */}
         <div className="space-y-2 md:col-span-2">
-          <Label className="text-foreground">Upload Photos (Optional)</Label>
+          <Label className="text-foreground">Photos (optional)</Label>
+          <p className="text-xs text-muted-foreground">
+            Photo upload is not available yet. Select files to note them on your
+            request, then email images to{" "}
+            <a href={`mailto:${siteConfig.email}`} className="text-accent underline">
+              {siteConfig.email}
+            </a>
+            .
+          </p>
           <div className="border-2 border-dashed border-input rounded-lg p-6 text-center">
             <input
               type="file"
@@ -242,10 +291,10 @@ export function FullQuoteForm({ compact = false, defaultMessage = "" }: FullQuot
             >
               <Upload className="h-8 w-8 text-muted-foreground" />
               <span className="text-sm text-muted-foreground">
-                Click to upload photos of your floor
+                Select photos of your existing deck or space
               </span>
               <span className="text-xs text-muted-foreground">
-                (Max 5 images, PNG/JPG)
+                (Max 5 images — email them after submitting)
               </span>
             </label>
           </div>
@@ -272,6 +321,12 @@ export function FullQuoteForm({ compact = false, defaultMessage = "" }: FullQuot
           )}
         </div>
       </div>
+
+      {error ? (
+        <p className="text-sm text-destructive mt-4" role="alert">
+          {error}
+        </p>
+      ) : null}
 
       <Button
         type="submit"
