@@ -31,13 +31,13 @@ export async function generateMetadata({ params }: GalleryProjectPageProps): Pro
 
   if (!project) {
     return {
-      title: "Project Not Found | Elevated Decks",
+      title: "Project Not Found",
     }
   }
 
   return {
-    title: `${project.title} | Elevated Decks Project`,
-    description: `${project.description} Located in ${project.location}.`,
+    title: `${project.title} in ${project.location}`,
+    description: `${project.description} Deck project in ${project.location}.`,
     alternates: {
       canonical: absoluteUrl(`/gallery/${project.slug}`),
     },
@@ -200,8 +200,8 @@ export default async function GalleryProjectPage({ params }: GalleryProjectPageP
                     </h2>
                     <p className="text-muted-foreground leading-relaxed mb-6">
                       We design decks around site conditions, material priorities, and the way
-                      you want to use the space, whether that means a pool deck, elevated deck,
-                      or premium outdoor living layout.
+                      you want to use the space, whether that means a pool deck, a multi-level
+                      layout, or a low-maintenance composite or PVC deck.
                     </p>
                     <Button asChild className="bg-accent hover:bg-accent/90 text-accent-foreground">
                       <Link href="/contact">

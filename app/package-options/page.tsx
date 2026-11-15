@@ -6,7 +6,7 @@ import { Footer } from "@/components/layout/footer"
 import { PackageGuideSection } from "@/components/package-options/package-guide-section"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { deckCategories, packageGuide, siteConfig } from "@/lib/site-config"
+import { packageGuide, siteConfig } from "@/lib/site-config"
 import { absoluteUrl } from "@/lib/seo"
 import {
   Download,
@@ -35,10 +35,33 @@ export const metadata: Metadata = {
 }
 
 const guideHighlights = [
-  "Three package tiers: Pressure-Treated, Composite, and Custom Premium",
-  "Material comparisons across Trex, TimberTech, and AZEK product lines",
-  "Railing, lighting, and accessory options for each tier",
-  "What to expect from consultation through final walkthrough",
+  "Four packages: Pressure Treated, Good, Better, and Best — matching your estimate",
+  "Current Trex Select, Transcend, and Lineage colors and warranties",
+  "TimberTech Advanced PVC (Harvest / Vintage / Landmark) and composite (Terrain / Legacy)",
+  "Railing mapped to the right package, plus lighting and under-deck drainage add-ons",
+]
+
+const estimatePackages = [
+  {
+    name: "Pressure Treated",
+    tagline: "Real wood. Lowest price.",
+    points: ["Outdoor PT boards", "Needs stain or seal", "3-year workmanship"],
+  },
+  {
+    name: "Good",
+    tagline: "Trex Select composite.",
+    points: ["35-year Trex board warranty", "Titan Pro or Trex Select/Enhance rail", "Soap-and-water upkeep"],
+  },
+  {
+    name: "Better",
+    tagline: "Our most popular package.",
+    points: ["Trex Transcend / Lineage or Terrain / Harvest", "50-year Trex or 30-year Terrain / lifetime Harvest PVC", "Transcend or RadianceRail"],
+  },
+  {
+    name: "Best",
+    tagline: "Premium PVC or Legacy.",
+    points: ["Vintage or Landmark PVC, or Legacy composite", "Lifetime + 50-year fade & stain on PVC", "5-year workmanship"],
+  },
 ]
 
 export default function PackageOptionsPage() {
@@ -64,9 +87,9 @@ export default function PackageOptionsPage() {
               {packageGuide.title}
             </h1>
             <p className="text-base sm:text-lg text-primary-foreground/75 mb-8 text-pretty leading-relaxed max-w-2xl mx-auto">
-              Thank you for scheduling your site visit with {siteConfig.name}. View or
-              download your product guide to review package options, materials, and next
-              steps before we meet.
+              Thank you for scheduling your site visit with {siteConfig.name}. This 2026
+              guide matches the Pressure Treated / Good / Better / Best packages on your
+              estimate, with current Trex and TimberTech colors and warranties.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
               <Button
@@ -115,8 +138,8 @@ export default function PackageOptionsPage() {
                   <div>
                     <h2 className="font-semibold text-foreground mb-1">What&apos;s inside</h2>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Package tiers, material options, and a clear overview of how we
-                      approach design, permitting, and construction.
+                      Four estimate packages, current board colors, corrected warranties,
+                      and railing mapped to the package we actually bid.
                     </p>
                   </div>
                 </CardContent>
@@ -146,25 +169,22 @@ export default function PackageOptionsPage() {
                 Package Overview
               </span>
               <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground text-balance">
-                Three Paths to Your Outdoor Space
+                Four packages. Same deck. Different boards.
               </h2>
             </div>
-            <div className="grid gap-6 md:grid-cols-3">
-              {deckCategories.map((category) => (
-                <Card key={category.id} className="border bg-card h-full">
+            <div className="grid gap-6 sm:grid-cols-2">
+              {estimatePackages.map((pkg) => (
+                <Card key={pkg.name} className="border bg-card h-full">
                   <CardContent className="p-5 sm:p-6 flex flex-col h-full">
-                    <h3 className="font-serif text-xl font-semibold text-foreground mb-2">
-                      {category.name}
+                    <h3 className="font-serif text-xl font-semibold text-foreground mb-1">
+                      {pkg.name}
                     </h3>
-                    <p className="text-sm text-accent font-medium mb-3">{category.tagline}</p>
-                    <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-1">
-                      {category.description}
-                    </p>
+                    <p className="text-sm text-accent font-medium mb-3">{pkg.tagline}</p>
                     <ul className="space-y-2">
-                      {category.services.map((service) => (
-                        <li key={service.id} className="flex items-start gap-2 text-sm">
+                      {pkg.points.map((point) => (
+                        <li key={point} className="flex items-start gap-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-accent shrink-0 mt-0.5" />
-                          <span className="text-foreground">{service.title}</span>
+                          <span className="text-foreground">{point}</span>
                         </li>
                       ))}
                     </ul>

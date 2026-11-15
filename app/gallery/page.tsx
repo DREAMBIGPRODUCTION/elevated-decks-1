@@ -4,9 +4,9 @@ import { absoluteUrl, getBreadcrumbSchema } from "@/lib/seo"
 import { siteConfig } from "@/lib/site-config"
 
 export const metadata: Metadata = {
-  title: "Project Gallery | Elevated Decks",
+  title: "Deck Projects in the Capital Region",
   description:
-    "Explore custom deck projects from Albany, Saratoga, Troy, Delmar, Guilderland, and surrounding Capital Region communities.",
+    "Photos of Trex, AZEK, and pressure-treated decks built in Albany, Saratoga, Troy, Clifton Park, and nearby Capital Region towns.",
   keywords: [
     "deck projects capital region ny",
     "albany ny deck gallery",

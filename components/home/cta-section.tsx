@@ -60,7 +60,7 @@ export function CTASection() {
 
           {/* Hours */}
           <p className="text-sm text-accent-foreground/70 mt-6">
-            Call us Mon-Sat, 7am-7pm | Emergency services available
+            Call us weekdays 8–6, Saturday 8–2
           </p>
         </div>
       </div>

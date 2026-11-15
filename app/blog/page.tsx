@@ -10,9 +10,9 @@ import { getAllBlogPosts } from "../../lib/blog"
 import { featuredProjects, siteConfig } from "@/lib/site-config"
 
 export const metadata: Metadata = {
-  title: "Blog | Elevated Decks",
+  title: "Deck Building Guides",
   description:
-    "Read Elevated Decks articles on composite decking, premium deck materials, design trends, and maintenance advice for the Capital Region and nearby Upstate New York markets.",
+    "Guides on Trex, TimberTech, AZEK, and composite decking for Albany, Saratoga Springs, Loudonville, and the Capital Region.",
   keywords: [
     "luxury deck builder saratoga springs ny blog",
     "custom deck builder loudonville ny blog",

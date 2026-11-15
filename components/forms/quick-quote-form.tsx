@@ -14,6 +14,7 @@ import {
 import { Spinner } from "@/components/ui/spinner"
 import { projectTypes, serviceAreas, siteConfig } from "@/lib/site-config"
 import { submitQuoteLead } from "@/app/actions/lead-actions"
+import { trackGenerateLead } from "@/lib/analytics"
 import { CheckCircle } from "lucide-react"
 
 export function QuickQuoteForm() {
@@ -56,6 +57,11 @@ export function QuickQuoteForm() {
       return
     }
 
+    trackGenerateLead({
+      form: "quick_quote",
+      sourcePage: typeof window !== "undefined" ? window.location.pathname : "/quick-quote",
+      projectType: formData.projectType || undefined,
+    })
     setIsSubmitted(true)
     setTimeout(() => {
       setIsSubmitted(false)

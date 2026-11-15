@@ -11,9 +11,9 @@ import { absoluteUrl, getBreadcrumbSchema } from "@/lib/seo"
 import { ArrowRight, Phone, CheckCircle } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Services & Materials | Elevated Decks",
+  title: "Trex, TimberTech and AZEK Decks",
   description:
-    "Custom deck services for the Capital Region. Trex and TimberTech decking, official Trex and AZEK railings, and integrated deck lighting.",
+    "Deck services for the Capital Region: Trex composite, TimberTech and AZEK PVC, pressure-treated wood, railings, and deck lighting.",
   alternates: {
     canonical: absoluteUrl("/services"),
   },
@@ -74,8 +74,8 @@ export default function ServicesPage() {
                 Custom Deck Services for the Capital Region
               </h1>
               <p className="text-lg sm:text-xl text-primary-foreground/70 mb-8 text-pretty leading-relaxed">
-                We design and build premium low-maintenance outdoor living spaces for homeowners
-                throughout the Capital Region and nearby Upstate New York communities.
+                Trex composite, TimberTech and AZEK PVC, and pressure-treated decks
+                for homeowners in Albany, Saratoga, Schenectady, and Warren counties.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button asChild size="lg" className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground h-14 px-8">
@@ -105,7 +105,7 @@ export default function ServicesPage() {
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <div>
                 <span className="text-sm uppercase tracking-widest text-accent font-medium mb-4 block">
-                  The Elevated Difference
+                  How we build
                 </span>
                 <h2 className="font-serif text-4xl md:text-5xl font-semibold mb-8 text-balance">
                   Built for Real Service Conditions
@@ -115,7 +115,7 @@ export default function ServicesPage() {
                     "Licensed, insured, and committed to quality craftsmanship",
                     "Custom design guidance tailored to your home and site",
                     "Permitting and code coordination handled from start to finish",
-                    "Structural detailing for elevation changes, snow loads, and freeze-thaw exposure",
+                    "Structural detailing for grade changes, snow loads, and freeze-thaw exposure",
                     "Premium materials selected for long-term outdoor performance",
                     "Free on-site consultations",
                   ].map((item) => (

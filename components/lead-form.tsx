@@ -9,6 +9,7 @@ import {
   initialLeadActionState,
   type LeadActionState,
 } from "@/lib/lead-validation"
+import { trackGenerateLead } from "@/lib/analytics"
 import { ArrowRight, CheckCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -18,13 +19,16 @@ type LeadFormProps = {
   successTitle?: string
   successMessage?: string
   submitLabel?: string
+  hideProjectType?: boolean
+  messagePlaceholder?: string
+  footnote?: string
 }
 
 const projectTypeOptions = [
   "Composite Deck",
   "TimberTech / PVC Deck",
   "Pressure-Treated Deck",
-  "Rooftop Deck",
+  "Multi-Level Deck",
   "Deck Resurface",
   "Trex / AZEK Railings",
   "Deck Lighting",
@@ -37,18 +41,23 @@ export function LeadForm({
   successTitle = "Thank You!",
   successMessage = "Your request has been sent. We’ll follow up soon.",
   submitLabel = "Request Consultation",
+  hideProjectType = false,
+  messagePlaceholder = "Size, materials, timeline, or anything we should know",
+  footnote = "We'll follow up by phone or email with next steps for your project.",
 }: LeadFormProps) {
   const [state, formAction, isPending] = useActionState<LeadActionState, FormData>(
     submitLead,
     initialLeadActionState,
   )
   const formRef = useRef<HTMLFormElement>(null)
+  const leadTracked = useRef(false)
 
   useEffect(() => {
-    if (state.success) {
-      formRef.current?.reset()
-    }
-  }, [state.success])
+    if (!state.success || leadTracked.current) return
+    leadTracked.current = true
+    formRef.current?.reset()
+    trackGenerateLead({ form: "consultation", sourcePage })
+  }, [state.success, sourcePage])
 
   if (state.success) {
     return (
@@ -65,7 +74,12 @@ export function LeadForm({
   }
 
   return (
-    <form ref={formRef} action={formAction} className={cn("space-y-6", className)}>
+    <form
+      ref={formRef}
+      action={formAction}
+      className={cn("space-y-6", className)}
+      key={state.message ? `retry-${state.message}` : "fresh"}
+    >
       <input type="hidden" name="sourcePage" value={sourcePage} />
       <input
         type="text"
@@ -88,6 +102,7 @@ export function LeadForm({
             required
             className="h-12"
             placeholder="Your full name"
+            defaultValue={state.values?.name ?? ""}
           />
         </div>
         <div>
@@ -101,12 +116,17 @@ export function LeadForm({
             required
             className="h-12"
             placeholder="you@email.com"
+            defaultValue={state.values?.email ?? ""}
           />
         </div>
       </div>
 
+      {hideProjectType ? (
+        <input type="hidden" name="projectType" value="Site visit" />
+      ) : null}
+
       <div className="grid sm:grid-cols-2 gap-6">
-        <div>
+        <div className={hideProjectType ? "sm:col-span-2" : undefined}>
           <label htmlFor={`${sourcePage}-phone`} className="block text-sm font-medium text-foreground mb-2">
             Phone
           </label>
@@ -117,29 +137,32 @@ export function LeadForm({
             required
             className="h-12"
             placeholder="(555) 123-4567"
+            defaultValue={state.values?.phone ?? ""}
           />
         </div>
-        <div>
-          <label htmlFor={`${sourcePage}-project-type`} className="block text-sm font-medium text-foreground mb-2">
-            Project Type
-          </label>
-          <select
-            id={`${sourcePage}-project-type`}
-            name="projectType"
-            required
-            defaultValue=""
-            className="flex h-12 w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-xs focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
-          >
-            <option value="" disabled>
-              Select a project type
-            </option>
-            {projectTypeOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
+        {hideProjectType ? null : (
+          <div>
+            <label htmlFor={`${sourcePage}-project-type`} className="block text-sm font-medium text-foreground mb-2">
+              Project Type
+            </label>
+            <select
+              id={`${sourcePage}-project-type`}
+              name="projectType"
+              required
+              defaultValue={state.values?.projectType ?? ""}
+              className="flex h-12 w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-xs focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+            >
+              <option value="" disabled>
+                Select a project type
               </option>
-            ))}
-          </select>
-        </div>
+              {projectTypeOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
 
       <div>
@@ -153,6 +176,7 @@ export function LeadForm({
           required
           className="h-12"
           placeholder="City, NY"
+          defaultValue={state.values?.location ?? ""}
         />
       </div>
 
@@ -164,9 +188,9 @@ export function LeadForm({
           id={`${sourcePage}-message`}
           name="message"
           rows={4}
-          required
           className="resize-none"
-          placeholder="Tell us about your project..."
+          placeholder={messagePlaceholder}
+          defaultValue={state.values?.message ?? ""}
         />
       </div>
 
@@ -191,9 +215,7 @@ export function LeadForm({
           {state.message}
         </p>
       ) : (
-        <p className="text-sm text-muted-foreground">
-          We&apos;ll follow up by phone or email with next steps for your project.
-        </p>
+        <p className="text-sm text-muted-foreground">{footnote}</p>
       )}
     </form>
   )

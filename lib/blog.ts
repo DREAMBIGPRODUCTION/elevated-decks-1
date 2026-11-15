@@ -129,7 +129,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: "The Right Choice Depends on Budget and Project Type",
         paragraphs: [
-          "Premium products often make the most sense on elevated decks, rooftop-style builds, and designs where the deck surface is a major visual feature. On other projects, a more moderate composite line can still deliver a very strong result when the structure and detailing are right.",
+          "Premium products often make the most sense when the deck surface is a major visual feature or the site is hard on materials. On other projects, a more moderate composite line can still deliver a very strong result when the structure and detailing are right.",
           "That is why the best material decision usually comes after the layout, exposure, and feature set are understood. Board brand is important, but it should follow the project strategy.",
         ],
       },
@@ -194,7 +194,7 @@ export const blogPosts: BlogPost[] = [
         heading: "Tie the Deck Back to the Landscape",
         paragraphs: [
           "Built-in planters, transitions to patios or lawn, and a material palette that works with the house all help the deck feel like part of the property instead of a separate platform.",
-          "That integration is often what separates a basic deck install from a more elevated outdoor living project.",
+          "That integration is often what separates a basic deck install from a more finished outdoor living project.",
         ],
       },
     ],
@@ -350,7 +350,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: "Where AZEK Usually Pulls Ahead",
         paragraphs: [
-          "AZEK is often the premium answer when moisture resistance, cooler underfoot performance, and a cleaner long-term finish are high priorities. It is especially attractive on high-visibility decks, rooftop-style builds, and custom projects where the surface finish is a major design element.",
+          "AZEK is often the premium answer when moisture resistance, cooler underfoot performance, and a cleaner long-term finish are high priorities. It is especially attractive on high-visibility decks and custom projects where the surface finish is a major design element.",
           "Its cost is higher, but that premium often makes sense when the homeowner wants fewer compromises in performance and appearance.",
         ],
       },

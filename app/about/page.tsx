@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import Image from "next/image"
 import { Header } from "@/components/layout/header"
+import { mediaPath } from "@/lib/media"
 import { Footer } from "@/components/layout/footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -21,8 +22,8 @@ import {
 } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "About Us | Elevated Decks",
-  description: "Learn about Elevated Decks — the Capital Region's trusted custom elevated deck and rooftop deck construction company. Established 2016.",
+  title: "About Our Deck Building Company",
+  description: "Elevated Decks has built custom Trex, TimberTech, AZEK, and pressure-treated decks in the Capital Region since 2016.",
   alternates: {
     canonical: absoluteUrl("/about"),
   },
@@ -53,7 +54,7 @@ const values = [
   {
     icon: Award,
     title: "Master Craftsmanship",
-    description: "Our team brings decades of combined experience in elevated deck construction and luxury outdoor finishes.",
+    description: "Our team brings decades of combined experience in custom deck construction and outdoor finishes.",
   },
   {
     icon: Users,
@@ -93,13 +94,13 @@ export default function AboutPage() {
                   About Us
                 </span>
                 <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold mb-6 text-balance leading-tight">
-                  Building Elevated Spaces Since 2016
+                  Capital Region deck builder since 2016
                 </h1>
                 <p className="text-lg sm:text-xl text-primary-foreground/70 mb-8 text-pretty leading-relaxed">
-                  Elevated Decks builds custom elevated and rooftop decks for homeowners across
-                  the Capital Region and select Upstate New York markets. We combine structural
-                  expertise with premium craftsmanship to create outdoor spaces that feel
-                  purposeful, refined, and built to last.
+                  Elevated Decks builds custom decks for homeowners across the Capital Region
+                  and select Upstate New York markets. We combine structural expertise with
+                  premium craftsmanship to create outdoor spaces that feel purposeful, refined,
+                  and built to last.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button asChild size="lg" className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground h-14 px-8">
@@ -151,7 +152,7 @@ export default function AboutPage() {
             <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
               <div className="relative aspect-[4/3] rounded-lg overflow-hidden">
                 <Image
-                  src="/images/Decks pics/trex/van schaick/51AC5E23-B0A2-47FF-8BF3-BCFDF0C8EAC5.jpg"
+                  src={mediaPath("/images/Decks pics/trex/van schaick/51AC5E23-B0A2-47FF-8BF3-BCFDF0C8EAC5.jpg")}
                   alt="Structural deck framing"
                   fill
                   className="object-cover"
@@ -172,9 +173,8 @@ export default function AboutPage() {
                     New York market we serve.
                   </p>
                   <p>
-                    Our founder saw a gap in the market — homeowners wanted premium elevated
-                    and rooftop decks, but most contractors lacked the structural expertise
-                    to build them safely and beautifully.
+                    Our founder saw a gap in the market — homeowners wanted a well-built
+                    custom deck, but most contractors treated the structure as an afterthought.
                   </p>
                   <p>
                     Today, we have built over 200 decks across Albany, Saratoga, Schenectady,
@@ -228,7 +228,7 @@ export default function AboutPage() {
                   Why Choose Us
                 </span>
                 <h2 className="font-serif text-3xl md:text-4xl font-semibold text-foreground mb-6 text-balance">
-                  The Elevated Difference
+                  How We Build
                 </h2>
                 <ul className="space-y-4">
                   {[
@@ -273,7 +273,7 @@ export default function AboutPage() {
               Ready to Work With Us?
             </h2>
             <p className="text-lg text-accent-foreground/80 mb-8 max-w-2xl mx-auto text-pretty">
-              Let us design and build your elevated outdoor space. Get a free consultation today.
+              Let us design and build your deck. Get a free consultation today.
             </p>
             <Button asChild size="lg" className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-10">
               <Link href="/contact">

@@ -1,45 +1,43 @@
 import { LeadForm } from "@/components/lead-form"
+import { siteConfig } from "@/lib/site-config"
 
 export function CTAForm() {
   return (
-    <section className="py-16 sm:py-24 lg:py-32 bg-background">
-      <div className="container mx-auto px-6 lg:px-12">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <div>
-            <span className="text-sm tracking-widest uppercase text-muted-foreground mb-4 block">
-              Get Started
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-light text-foreground leading-tight mb-6 text-balance">
-              Ready to Build
-              <br />
-              <span className="text-[var(--deck-wood)]">Your Deck?</span>
-            </h2>
-            <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-              Take the first step toward your dream outdoor space. Schedule a free consultation
-              with our team to discuss your project, review design options, and receive a custom proposal.
-            </p>
-            <div className="space-y-4 text-muted-foreground">
-              <div className="flex items-center gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-[var(--deck-wood)]" />
-                <span>Free on-site consultations</span>
+    <section id="visit" className="border-t border-border bg-background py-24 sm:py-32">
+      <div className="mx-auto grid max-w-6xl gap-16 px-6 lg:grid-cols-12 lg:gap-20 lg:px-8">
+        <div className="lg:col-span-5">
+          <h2 className="text-balance font-serif text-4xl font-light leading-tight text-foreground sm:text-5xl">
+            Request a site visit.
+          </h2>
+          <p className="mt-6 max-w-md text-lg leading-relaxed text-muted-foreground">
+            We visit the property, review the grade and access, and discuss
+            layout and materials before preparing a proposal.
+          </p>
+          <div className="mt-10 space-y-3 text-sm">
+            {siteConfig.hours.map((row) => (
+              <div key={row.days} className="flex justify-between gap-6 border-b border-border py-2">
+                <span className="text-muted-foreground">{row.days}</span>
+                <span className="text-foreground">{row.label}</span>
               </div>
-              <div className="flex items-center gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-[var(--deck-wood)]" />
-                <span>Custom 3D design renderings</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-[var(--deck-wood)]" />
-                <span>Transparent project proposals</span>
-              </div>
-            </div>
+            ))}
           </div>
+          <a
+            href={`tel:${siteConfig.phoneClean}`}
+            className="mt-8 inline-block text-foreground hover:text-accent"
+          >
+            {siteConfig.phone}
+          </a>
+        </div>
 
-          <div className="bg-card border border-border rounded-sm p-5 sm:p-8 lg:p-10">
-            <LeadForm
-              sourcePage="homepage-cta"
-              successMessage="Thanks. Your request has been sent and we’ll follow up with your next steps soon."
-            />
-          </div>
+        <div className="lg:col-span-6 lg:col-start-7">
+          <LeadForm
+            sourcePage="homepage-cta"
+            submitLabel="Request a site visit"
+            messagePlaceholder="The house, the yard, and what you want the deck to do."
+            footnote="We'll call or write back during business hours."
+            successTitle="Request received."
+            successMessage="We'll follow up to set a time to see the house."
+          />
         </div>
       </div>
     </section>

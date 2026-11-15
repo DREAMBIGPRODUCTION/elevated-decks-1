@@ -18,9 +18,9 @@ export function ServicesGrid() {
             Beautiful Outdoor Spaces, Thoughtfully Designed
           </h2>
           <p className="text-lg text-muted-foreground text-pretty leading-relaxed">
-            We design custom deck spaces for homeowners across the Capital Region and nearby
-            Upstate New York communities. From intimate backyard retreats to expansive
-            entertaining layouts, each project is built around your home, site, and lifestyle.
+            We design Trex, TimberTech, AZEK, and pressure-treated decks for homes
+            in Albany, Saratoga Springs, Clifton Park, Loudonville, and nearby
+            Capital Region towns. Layout, stairs, and railings follow the house and the yard.
           </p>
         </div>
 

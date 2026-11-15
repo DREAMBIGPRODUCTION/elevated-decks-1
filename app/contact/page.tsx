@@ -4,9 +4,9 @@ import { absoluteUrl, getBreadcrumbSchema } from "@/lib/seo"
 import { siteConfig } from "@/lib/site-config"
 
 export const metadata: Metadata = {
-  title: "Contact | Elevated Decks",
+  title: "Request a Deck Estimate",
   description:
-    "Request a consultation for a custom deck project in Albany, Saratoga, Schenectady, Warren County, and nearby Capital Region markets.",
+    "Request a deck estimate in Albany, Saratoga Springs, Clifton Park, Loudonville, or nearby Capital Region towns. Call (838) 280-0308 or send the form.",
   keywords: [
     "deck consultation capital region ny",
     "contact custom deck builder albany ny",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Contact Elevated Decks | Capital Region Deck Consultations",
     description:
-      "Talk with Elevated Decks about your custom deck, rooftop deck, or premium outdoor living project in Upstate New York.",
+      "Request a Trex, TimberTech, AZEK, or pressure-treated deck estimate in the Capital Region.",
     url: absoluteUrl("/contact"),
     siteName: siteConfig.name,
     locale: "en_US",

@@ -28,6 +28,27 @@ export function getSiteSchema() {
         email: siteConfig.email,
         telephone: `+1${siteConfig.phoneClean}`,
         foundingDate: siteConfig.established,
+        knowsAbout: [
+          "Trex composite decking",
+          "TimberTech decking",
+          "AZEK PVC decking",
+          "Pressure-treated wood decks",
+          "Deck railings and lighting",
+        ],
+        openingHoursSpecification: [
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            opens: "08:00",
+            closes: "18:00",
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: "Saturday",
+            opens: "08:00",
+            closes: "14:00",
+          },
+        ],
         areaServed: [
           ...serviceAreas.counties.map((county) => ({
             "@type": "AdministrativeArea",

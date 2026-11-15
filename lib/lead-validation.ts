@@ -6,7 +6,7 @@ export const leadSchema = z.object({
   phone: z.string().trim().min(7, "Please enter a valid phone number."),
   projectType: z.string().trim().min(2, "Please choose a project type."),
   location: z.string().trim().min(2, "Please enter the project location."),
-  message: z.string().trim().min(10, "Please share a few project details."),
+  message: z.string().trim().optional().default(""),
   sourcePage: z.string().trim().min(1, "Missing source page."),
   website: z.string().trim().optional().default(""),
 })
@@ -16,6 +16,7 @@ export type LeadFormValues = z.infer<typeof leadSchema>
 export type LeadActionState = {
   success: boolean
   message: string
+  values?: Partial<LeadFormValues>
 }
 
 export const initialLeadActionState: LeadActionState = {

@@ -1,9 +1,11 @@
 // Elevated Decks - Site Configuration
 
+import { mediaPath } from "./media"
+
 export const packageGuide = {
-  title: "Package Options Guide",
+  title: "Material Selection Guide",
   description:
-    "An overview of our deck package tiers, material options, and what to expect after your site visit.",
+    "Pressure Treated, Good, Better, and Best — current Trex and TimberTech boards, railings, warranties, and add-ons.",
   pdfPath: "/package-options.pdf",
   pdfFilename: "package-options.pdf",
 }
@@ -37,7 +39,7 @@ export const siteConfig = {
   name: "Elevated Decks",
   tagline: "Your Backyard, Your Sanctuary",
   description:
-    "We build luxury custom decks for homeowners in Saratoga Springs, Loudonville, Niskayuna, Malta, Lake George, and select Upstate New York markets.",
+    "Custom deck builder for Albany, Saratoga Springs, Clifton Park, Loudonville, and the Capital Region. Trex, TimberTech, AZEK, and pressure-treated decks.",
   phone: "(838) 280-0308",
   phoneClean: "8382800308",
   email: "sales@elevateddecksny.com",
@@ -52,8 +54,13 @@ export const siteConfig = {
     instagram: "https://instagram.com/elevateddecks",
     houzz: "https://houzz.com/elevateddecks",
   },
-  url: "https://elevateddecksny.com",
+  url: "https://www.elevateddecksny.com",
   established: "2016",
+  hours: [
+    { days: "Monday – Friday", opens: "08:00", closes: "18:00", label: "8:00 AM – 6:00 PM" },
+    { days: "Saturday", opens: "08:00", closes: "14:00", label: "8:00 AM – 2:00 PM" },
+    { days: "Sunday", opens: null, closes: null, label: "Closed" },
+  ],
 }
 
 export const navigation = {
@@ -66,8 +73,8 @@ export const navigation = {
     { name: "Contact", href: "/contact" },
   ],
   services: [
-    { name: "Custom Elevated Decks", href: "/services#elevated-decks" },
-    { name: "Rooftop Deck Construction", href: "/services#rooftop-decks" },
+    { name: "Custom Decks", href: "/services" },
+    { name: "AZEK & PVC Decking", href: "/services#timbertech" },
     { name: "Structural Deck Framing", href: "/services#structural-framing" },
     { name: "Multi-Level Deck Systems", href: "/services#multi-level" },
     { name: "Composite & Hardwood Decking", href: "/services#decking" },
@@ -110,11 +117,11 @@ export const deckCategories = [
         icon: "Grid3x3",
       },
       {
-        id: "elevated-decks",
-        title: "Elevated Decks With a View",
-        shortDesc: "Rise above with a deck that transforms your outdoor space.",
+        id: "custom-decks",
+        title: "Custom Deck Design",
+        shortDesc: "A deck planned around your house, yard, and how you use it.",
         description:
-          "We craft beautiful elevated decks that create stunning focal points in your landscape. Whether hovering over slopes, pools, or gardens, your elevated deck becomes a gathering place where life's special moments shine.",
+          "We design and build custom decks for backyards, pools, and grade changes. Layout, stairs, and railings are planned for the site so the finished deck fits the house and holds up in Capital Region weather.",
         icon: "Layers",
       },
     ],
@@ -152,11 +159,11 @@ export const deckCategories = [
       "For those with a refined vision: AZEK premium surfaces that combine architectural elegance with durability. These sophisticated decks are virtually maintenance-free, leaving you free to relax, entertain, and create lasting memories.",
     services: [
       {
-        id: "rooftop-decks",
-        title: "Urban Oasis: Rooftop Decks",
-        shortDesc: "Discover the magic of entertaining and relaxing in the sky.",
+        id: "pvc-decks",
+        title: "AZEK and PVC Decks",
+        shortDesc: "Low-maintenance PVC surfaces with a clean, lasting finish.",
         description:
-          "Your rooftop holds untapped potential for an enchanting escape. We transform flat roofs into sophisticated outdoor living spaces where you can enjoy morning coffee, evening sunsets, and memorable gatherings above it all.",
+          "AZEK and other PVC boards stay stable through wet springs, summer sun, and freeze-thaw cycles. We use them where moisture resistance and a refined finish matter most.",
         icon: "Building2",
       },
       {
@@ -457,7 +464,7 @@ export const galleryProjects: GalleryProject[] = [
     material: "trex",
     location: "Albany, NY",
     description:
-      "Custom elevated Trex composite deck with cable railings and LED step lighting, overlooking Van Schaick Island. Built with precision engineering and professional design.",
+      "Custom Trex composite deck with cable railings and LED step lighting, overlooking Van Schaick Island. Built with precision engineering and professional design.",
     image: "/images/Decks pics/trex/van schaick/9E24368C-09D2-40D4-BF95-09C8239CB07B.jpg",
     images: [
       "/images/Decks pics/trex/van schaick/9E24368C-09D2-40D4-BF95-09C8239CB07B.jpg",
@@ -487,10 +494,9 @@ export const galleryProjects: GalleryProject[] = [
     location: "Clifton Park, NY",
     description:
       "Custom AZEK Harvest Collection Kona deck boards built off the home's sunroom in Clifton Park, with stair lighting, post cap lighting, and a low-maintenance PVC finish designed for everyday outdoor living.",
-    image: "/images/Decks pics/trex/amar/62009209184__B466798B-8116-41AE-9668-CCB6919B03B1.jpg",
+    image: "/images/Decks pics/trex/amar/62009209184__B466798B-8116-41AE-9668-CCB6919B03B1.JPG",
     images: [
-      "/images/Decks pics/trex/amar/62009209184__B466798B-8116-41AE-9668-CCB6919B03B1.jpg",
-      "/images/Decks pics/trex/amar/61886496958__C48B881D-B811-4FE0-A5FE-43DADD2AA866.JPG",
+      "/images/Decks pics/trex/amar/62009209184__B466798B-8116-41AE-9668-CCB6919B03B1.JPG",
     ],
   },
   {
@@ -501,13 +507,13 @@ export const galleryProjects: GalleryProject[] = [
     material: "azek",
     location: "Rensselaer, NY",
     description:
-      "Premium AZEK rooftop deck with integrated sunroom transformation. Features AZEK PVC decking, glass panel railings, and integrated lighting — engineered for ultimate durability.",
+      "Premium AZEK deck with an integrated sunroom. Features AZEK PVC decking, glass panel railings, and integrated lighting — engineered for durability.",
     image: "/images/Decks pics/azek/kelsey deck nice trex/1B1C705F-748D-47C1-B65D-20FBA3C3577F.jpg",
     images: [
       "/images/Decks pics/azek/kelsey deck nice trex/1B1C705F-748D-47C1-B65D-20FBA3C3577F.jpg",
       "/images/Decks pics/azek/kelsey deck nice trex/525FADD7-63C6-417D-BCD4-D67F9CA831EE.jpg",
-      "/images/Decks pics/azek/kelsey deck nice trex/61637121777__465996FE-7796-4C53-93D5-E72F6F05B4B6.jpg",
-      "/images/Decks pics/azek/kelsey deck nice trex/61637122918__F60EF1C3-2BE3-4154-9201-3E0B56F65968.jpg",
+      "/images/Decks pics/azek/kelsey deck nice trex/61637121777__465996FE-7796-4C53-93D5-E72F6F05B4B6.JPG",
+      "/images/Decks pics/azek/kelsey deck nice trex/61637122918__F60EF1C3-2BE3-4154-9201-3E0B56F65968.JPG",
       "/images/Decks pics/azek/kelsey deck nice trex/61637124782__55CEFA9E-D6F9-4CB0-8E84-480BB0B15184.JPG",
       "/images/Decks pics/azek/kelsey deck nice trex/88F53BD1-5448-4D0E-B5CE-F1FEEF24547D.jpg",
       "/images/Decks pics/azek/kelsey deck nice trex/8BC4A7AD-0329-4A6A-B829-8146D5EF4EF3.jpg",
@@ -558,7 +564,7 @@ export const galleryProjects: GalleryProject[] = [
     material: "PT",
     location: "Troy, NY",
     description:
-      "Large-scale elevated pressure-treated deck in Troy with structural framing, professional board installation, and a classic wood deck built for long-term outdoor use.",
+      "Large pressure-treated deck in Troy with structural framing, professional board installation, and a classic wood deck built for long-term outdoor use.",
     image: "/images/Decks pics/PT/brandon - deck/A47A30B4-18E3-40ED-BABF-E92281860AF6.jpg",
     images: [
       "/images/Decks pics/PT/brandon - deck/A47A30B4-18E3-40ED-BABF-E92281860AF6.jpg",
@@ -583,6 +589,11 @@ export const galleryProjects: GalleryProject[] = [
     ],
   },
 ]
+
+for (const project of galleryProjects) {
+  project.image = mediaPath(project.image)
+  project.images = project.images.map(mediaPath)
+}
 
 export const featuredProjects = [
   galleryProjects.find(p => p.id === 7)!, // AZEK with Sunroom
@@ -614,26 +625,29 @@ export const designServices = {
   ]
 }
 
+designServices.mainImage = mediaPath(designServices.mainImage)
+designServices.screenshots = designServices.screenshots.map(mediaPath)
+
 export const testimonials = [
   {
     name: "Michael R.",
     location: "Loudonville, NY",
     rating: 5,
-    text: "Elevated Decks transformed the back of our home. The elevated deck they built over the slope is absolutely stunning, and the structural quality is evident in every detail. Couldn't be more impressed.",
-    project: "Elevated Backyard Deck",
+    text: "Elevated Decks transformed the back of our home. The deck they built is absolutely stunning, and the structural quality is evident in every detail. Couldn't be more impressed.",
+    project: "Custom Backyard Deck",
   },
   {
     name: "Sandra T.",
     location: "Albany, NY",
     rating: 5,
-    text: "We hired them for a rooftop-style deck addition. They handled the planning process smoothly and the result is a magazine-worthy space. Worth every penny.",
-    project: "Rooftop Deck Construction",
+    text: "We hired them for a new deck off the back of the house. They handled the planning process smoothly and the result is a magazine-worthy space. Worth every penny.",
+    project: "Custom Deck",
   },
   {
     name: "James & Laura K.",
     location: "Saratoga Springs, NY",
     rating: 5,
-    text: "The team's structural knowledge is unmatched. They designed a multi-level deck that handles our elevation changes perfectly. Built to last, looks incredible, and done on schedule.",
+    text: "The team's structural knowledge is unmatched. They designed a multi-level deck that handles our grade changes perfectly. Built to last, looks incredible, and done on schedule.",
     project: "Multi-Level Deck System",
   },
   {

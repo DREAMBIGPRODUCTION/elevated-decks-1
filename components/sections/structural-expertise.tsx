@@ -12,8 +12,8 @@ const features = [
   },
   {
     icon: Shield,
-    title: "Elevated Safety",
-    description: "Elevated deck systems designed with multiple safety redundancies and code compliance."
+    title: "Built-In Safety",
+    description: "Deck frames designed with multiple safety redundancies and code compliance."
   },
   {
     icon: Wind,
@@ -23,7 +23,7 @@ const features = [
   {
     icon: HardHat,
     title: "Expert Installation",
-    description: "Licensed and insured crews with decades of elevated deck construction experience."
+    description: "Licensed and insured crews with decades of custom deck construction experience."
   }
 ]
 

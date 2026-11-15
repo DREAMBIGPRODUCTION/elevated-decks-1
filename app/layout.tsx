@@ -1,5 +1,8 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, Playfair_Display } from 'next/font/google'
+import { preconnect, prefetchDNS } from 'react-dom'
+import { GoogleAnalytics } from '@/components/google-analytics'
+import { isGaEnabled } from '@/lib/analytics'
 import { siteConfig } from '@/lib/site-config'
 import './globals.css'
 
@@ -18,22 +21,22 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: 'Elevated Decks | Luxury Deck Builder in Saratoga Springs, Loudonville & Upstate NY',
+    default: 'Custom Deck Builder in Albany & Saratoga Springs | Elevated Decks',
     template: '%s | Elevated Decks',
   },
   description:
-    'Luxury deck builder serving Saratoga Springs, Loudonville, Niskayuna, Malta, Lake George, and select Upstate New York markets. Custom decks, elevated decks, premium materials, and refined outdoor living design.',
+    'Custom deck builder for Albany, Saratoga Springs, Clifton Park, Loudonville, and the Capital Region. Trex, TimberTech, AZEK, and pressure-treated decks.',
   keywords: [
-    'luxury deck builder saratoga springs ny',
-    'custom deck builder loudonville ny',
-    'premium deck contractor niskayuna ny',
-    'high-end deck builder lake george ny',
-    'custom deck design malta ny',
-    'luxury deck builder clifton park ny',
-    'capital region deck contractor',
-    'upstate new york composite decking',
-    'trex deck builder saratoga county',
-    'azek deck contractor upstate ny',
+    'deck builder albany ny',
+    'deck builder saratoga springs ny',
+    'custom deck builder clifton park ny',
+    'deck contractor loudonville ny',
+    'trex deck installer capital region',
+    'azek deck builder upstate ny',
+    'timbertech deck contractor ny',
+    'pressure treated deck builder albany',
+    'capital region deck builder',
+    'deck builder niskayuna ny',
   ],
   authors: [{ name: 'Elevated Decks' }],
   creator: 'Elevated Decks',
@@ -47,15 +50,22 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     siteName: 'Elevated Decks',
-    title: 'Elevated Decks | Luxury Deck Builder in Saratoga Springs, Loudonville & Upstate NY',
+    title: 'Custom Deck Builder in Albany & Saratoga Springs | Elevated Decks',
     description:
-      'Luxury deck builder serving Saratoga Springs, Loudonville, Niskayuna, Malta, Lake George, and select Upstate New York markets.',
+      'Trex, TimberTech, AZEK, and pressure-treated decks for Capital Region homes.',
+    images: [
+      {
+        url: '/blog/p1.jpg',
+        alt: 'Finished composite deck on a Capital Region home',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Elevated Decks | Luxury Deck Builder in Upstate New York',
+    title: 'Custom Deck Builder in the Capital Region | Elevated Decks',
     description:
-      'Custom luxury decks for Saratoga Springs, Loudonville, Niskayuna, Malta, Lake George, and nearby Upstate NY markets.',
+      'Trex, TimberTech, AZEK, and pressure-treated decks for Albany, Saratoga Springs, Clifton Park, and nearby towns.',
+    images: ['/blog/p1.jpg'],
   },
   robots: {
     index: true,
@@ -81,9 +91,18 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  if (isGaEnabled()) {
+    prefetchDNS('https://www.googletagmanager.com')
+    preconnect('https://www.googletagmanager.com')
+    preconnect('https://www.google-analytics.com')
+  }
+
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable} bg-background`}>
-      <body className="font-sans antialiased min-h-screen overflow-x-hidden">{children}</body>
+      <body className="font-sans antialiased min-h-screen overflow-x-hidden">
+        {children}
+        <GoogleAnalytics />
+      </body>
     </html>
   )
 }

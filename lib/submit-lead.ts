@@ -1,11 +1,14 @@
 /**
- * Shared lead submission to platform API or legacy direct DB.
+ * Shared lead submission.
  *
  * Env:
- *   LEAD_TRANSPORT=api|db   (default: api if LEAD_API_URL set, else db)
- *   LEAD_API_URL=https://api.elevateddecksny.com/api/v1/public/leads
- *   LEAD_INGEST_KEY=...
- *   DATABASE_URL=...        (db transport only)
+ *   LEAD_TRANSPORT=email|api|db
+ *     default: email via Gmail SMTP from elevateddecksny@gmail.com
+ *   LEAD_SMTP_PASS                   Gmail app password for LEAD_SMTP_USER
+ *   LEAD_SMTP_USER=elevateddecksny@gmail.com
+ *   LEAD_TO_EMAIL=adminelevatedecksny@gmail.com
+ *   LEAD_API_URL / LEAD_INGEST_KEY   inactive CRM ingest
+ *   DATABASE_URL                     legacy direct insert
  */
 
 export type SubmitLeadInput = {
@@ -25,11 +28,10 @@ export type SubmitLeadResult =
   | { ok: true; message: string; id?: string }
   | { ok: false; message: string }
 
-function transportMode(): "api" | "db" {
+function transportMode(): "email" | "api" | "db" {
   const explicit = process.env.LEAD_TRANSPORT?.toLowerCase()
-  if (explicit === "api" || explicit === "db") return explicit
-  if (process.env.LEAD_API_URL) return "api"
-  return "db"
+  if (explicit === "email" || explicit === "api" || explicit === "db") return explicit
+  return "email"
 }
 
 export async function submitLeadPayload(
@@ -46,11 +48,38 @@ export async function submitLeadPayload(
 
   const mode = transportMode()
 
+  if (mode === "email") {
+    return submitViaEmail(input)
+  }
+
   if (mode === "api") {
     return submitViaApi(input)
   }
 
   return submitViaDb(input, meta)
+}
+
+async function submitViaEmail(input: SubmitLeadInput): Promise<SubmitLeadResult> {
+  try {
+    const { sendLeadEmail } = await import("@/lib/send-lead-email")
+    const sent = await sendLeadEmail({
+      ...input,
+      message: input.message.trim() || "(No extra details.)",
+    })
+    console.info("[submit-lead] emailed", sent.to, sent.messageId)
+    return {
+      ok: true,
+      id: sent.messageId,
+      message: "Thanks. Your request has been sent and we’ll follow up soon.",
+    }
+  } catch (err) {
+    console.error("[submit-lead] email failed", err)
+    return {
+      ok: false,
+      message:
+        "We couldn't send your request right now. Please call or email us directly.",
+    }
+  }
 }
 
 async function submitViaApi(input: SubmitLeadInput): Promise<SubmitLeadResult> {
@@ -72,6 +101,9 @@ async function submitViaApi(input: SubmitLeadInput): Promise<SubmitLeadResult> {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${key}`,
+        // Cloudflare Bot Fight Mode returns 1010 for the default Node fetch UA.
+        "User-Agent":
+          "Mozilla/5.0 (compatible; ElevatedDecksLeadIngest/1.0; +https://www.elevateddecksny.com)",
       },
       body: JSON.stringify({
         name: input.name,

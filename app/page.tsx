@@ -2,28 +2,27 @@ import type { Metadata } from "next"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { Hero } from "@/components/sections/hero"
-import { ServicesGrid } from "@/components/sections/services-grid"
-import { DesignSection } from "@/components/sections/design-section"
-import { ProjectGallery } from "@/components/sections/project-gallery"
-import { FacebookReelsSection } from "@/components/sections/facebook-reels"
-import { Materials } from "@/components/sections/materials"
-import { Process } from "@/components/sections/process"
-import { Testimonials } from "@/components/sections/testimonials"
+import { HomeExperience } from "@/components/sections/home-experience"
+import { HomePlaces } from "@/components/sections/home-places"
+import { HomeStandard } from "@/components/sections/home-standard"
+import { HomeAreas } from "@/components/sections/home-areas"
 import { CTAForm } from "@/components/sections/cta-form"
 import { absoluteUrl, getBreadcrumbSchema, getSiteSchema } from "@/lib/seo"
 import { siteConfig } from "@/lib/site-config"
 
 export const metadata: Metadata = {
-  title: "Luxury Deck Builder in the Capital Region",
+  title: {
+    absolute: "Custom Deck Builder in Albany & Saratoga Springs | Elevated Decks",
+  },
   description:
-    "Elevated Decks designs and builds custom composite, AZEK, elevated, and rooftop decks across Albany, Saratoga, Loudonville, Clifton Park, and nearby Upstate New York markets.",
+    "Custom Trex, TimberTech, AZEK, and pressure-treated decks in Saratoga Springs, Lake George, Clifton Park, Loudonville, Albany, and the Capital Region.",
   alternates: {
     canonical: absoluteUrl("/"),
   },
   openGraph: {
-    title: "Elevated Decks | Custom Deck Builder in Upstate New York",
+    title: "Custom Deck Builder in Saratoga, Lake George, and Albany | Elevated Decks",
     description:
-      "Luxury deck design, structural expertise, and premium outdoor living construction for the Capital Region and nearby Upstate New York communities.",
+      "Trex, TimberTech, AZEK, and pressure-treated decks for Saratoga Springs, Lake George, Clifton Park, and the Capital Region.",
     url: absoluteUrl("/"),
     siteName: siteConfig.name,
     locale: "en_US",
@@ -50,13 +49,10 @@ export default function HomePage() {
       <Header />
       <main>
         <Hero />
-        <ServicesGrid />
-        <DesignSection />
-        <ProjectGallery />
-        <FacebookReelsSection />
-        <Materials />
-        <Process />
-        <Testimonials />
+        <HomeExperience />
+        <HomePlaces />
+        <HomeStandard />
+        <HomeAreas />
         <CTAForm />
       </main>
       <Footer />

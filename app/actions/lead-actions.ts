@@ -48,12 +48,21 @@ export async function submitLead(
     return {
       success: result.ok,
       message: result.message,
+      values: result.ok ? undefined : values,
     }
   } catch (error) {
     if (error instanceof ZodError) {
       return {
         ...initialLeadActionState,
         message: error.issues[0]?.message ?? "Please review the form and try again.",
+        values: {
+          name: String(formData.get("name") ?? ""),
+          email: String(formData.get("email") ?? ""),
+          phone: String(formData.get("phone") ?? ""),
+          projectType: String(formData.get("projectType") ?? ""),
+          location: String(formData.get("location") ?? ""),
+          message: String(formData.get("message") ?? ""),
+        },
       }
     }
 

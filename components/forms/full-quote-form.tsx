@@ -15,6 +15,7 @@ import {
 import { Spinner } from "@/components/ui/spinner"
 import { projectTypes, getAllLocations, siteConfig } from "@/lib/site-config"
 import { submitQuoteLead } from "@/app/actions/lead-actions"
+import { trackGenerateLead } from "@/lib/analytics"
 import { CheckCircle, Upload, X } from "lucide-react"
 
 interface FullQuoteFormProps {
@@ -75,6 +76,11 @@ export function FullQuoteForm({ compact = false, defaultMessage = "" }: FullQuot
       return
     }
 
+    trackGenerateLead({
+      form: "full_quote",
+      sourcePage: typeof window !== "undefined" ? window.location.pathname : "/contact",
+      projectType: formData.projectType || undefined,
+    })
     setIsSubmitted(true)
   }
 

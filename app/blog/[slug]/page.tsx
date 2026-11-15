@@ -24,12 +24,12 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
   if (!post) {
     return {
-      title: "Article Not Found | Elevated Decks",
+      title: "Article Not Found",
     }
   }
 
   return {
-    title: `${post.title} | Elevated Decks`,
+    title: post.title,
     description: post.excerpt,
     keywords: post.keywords,
     alternates: {

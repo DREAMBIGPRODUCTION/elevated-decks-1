@@ -66,8 +66,8 @@ export function ProjectGallery() {
             Featured Projects
           </h2>
           <p className="text-lg text-muted-foreground text-pretty leading-relaxed">
-            Explore our portfolio of custom elevated decks, rooftop installations,
-            and structural framing projects in the Capital Region.
+            Trex, AZEK, and pressure-treated decks built in Albany, Saratoga,
+            Troy, Clifton Park, and nearby Capital Region towns.
           </p>
         </div>
 

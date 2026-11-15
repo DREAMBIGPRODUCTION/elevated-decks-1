@@ -48,7 +48,7 @@ export function ContactPageContent() {
                   >
                     {siteConfig.phone}
                   </a>
-                  <p className="text-sm text-muted-foreground mt-1">Mon-Sat, 7am-7pm</p>
+                  <p className="text-sm text-muted-foreground mt-1">Weekdays 8–6, Saturday 8–2</p>
                 </CardContent>
               </Card>
 
@@ -110,18 +110,15 @@ export function ContactPageContent() {
                       <h3 className="text-lg font-semibold text-foreground">Business Hours</h3>
                     </div>
                     <div className="space-y-3 text-sm">
-                      <div className="flex flex-col gap-0.5 sm:flex-row sm:justify-between sm:gap-4">
-                        <span className="text-muted-foreground">Monday - Friday</span>
-                        <span className="font-medium text-foreground">7:00 AM - 7:00 PM</span>
-                      </div>
-                      <div className="flex flex-col gap-0.5 sm:flex-row sm:justify-between sm:gap-4">
-                        <span className="text-muted-foreground">Saturday</span>
-                        <span className="font-medium text-foreground">8:00 AM - 5:00 PM</span>
-                      </div>
-                      <div className="flex flex-col gap-0.5 sm:flex-row sm:justify-between sm:gap-4">
-                        <span className="text-muted-foreground">Sunday</span>
-                        <span className="font-medium text-foreground">By Appointment</span>
-                      </div>
+                      {siteConfig.hours.map((row) => (
+                        <div
+                          key={row.days}
+                          className="flex flex-col gap-0.5 sm:flex-row sm:justify-between sm:gap-4"
+                        >
+                          <span className="text-muted-foreground">{row.days}</span>
+                          <span className="font-medium text-foreground">{row.label}</span>
+                        </div>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>

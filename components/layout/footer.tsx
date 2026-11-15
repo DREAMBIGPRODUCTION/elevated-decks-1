@@ -41,9 +41,17 @@ export function Footer() {
               </div>
             </Link>
             <p className="text-white/70 text-sm leading-relaxed">
-              Luxury deck design and construction for discerning homeowners across the
-              Capital Region and select nearby Upstate New York markets.
+              Custom decks in Saratoga Springs, Lake George, Clifton Park, and the Capital Region.
             </p>
+            <div className="space-y-1 text-sm text-white/70">
+              {siteConfig.hours.map((row) => (
+                <p key={row.days}>
+                  {row.days}
+                  <span className="text-white/40"> · </span>
+                  {row.label}
+                </p>
+              ))}
+            </div>
             <div className="flex items-center gap-4">
               <a
                 href={siteConfig.social.facebook}
@@ -96,12 +104,20 @@ export function Footer() {
           <div>
             <h4 className="font-semibold text-lg mb-6">Deck Services</h4>
             <ul className="space-y-3">
-              <li className="text-white/70 text-sm">Composite Decks</li>
-              <li className="text-white/70 text-sm">Premium PVC Decks</li>
-              <li className="text-white/70 text-sm">Custom Elevated Decks</li>
-              <li className="text-white/70 text-sm">Structural Framing</li>
-              <li className="text-white/70 text-sm">Rooftop Decks</li>
-              <li className="text-white/70 text-sm">Railings & Lighting</li>
+              {[
+                { label: "Trex Composite Decks", href: "/services#trex" },
+                { label: "AZEK & PVC Decks", href: "/services#timbertech" },
+                { label: "Railings", href: "/services#railings" },
+                { label: "Deck Lighting", href: "/services#lighting" },
+                { label: "Project Photos", href: "/gallery" },
+                { label: "Request an Estimate", href: "/contact" },
+              ].map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="text-white/70 hover:text-accent transition-colors text-sm">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -157,6 +173,14 @@ export function Footer() {
             <p className="text-white/50 text-sm">
               &copy; {currentYear} {siteConfig.name}. All rights reserved.
             </p>
+            <div className="flex items-center gap-4 text-sm text-white/50">
+              <Link href="/privacy" className="hover:text-accent transition-colors">
+                Privacy Policy
+              </Link>
+              <Link href="/terms" className="hover:text-accent transition-colors">
+                Terms of Service
+              </Link>
+            </div>
           </div>
         </div>
       </div>
